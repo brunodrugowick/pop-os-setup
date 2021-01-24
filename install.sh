@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # A list of packages separated by a single space
-packages="vim git lm-sensors lshw-gtk jq httpie"
+packages="vim git lm-sensors lshw-gtk jq httpie gnome-tweaks"
 
 # Install previous list of packages
 sudo apt install -y ${packages}
@@ -13,8 +13,11 @@ setxkbmap
 
 # A list of flatpak packages separated by spaces. Use the package ID for installation.
 # You may use 'flatpak search <package-name>' if you'd like to search a package name.
-flatpak_packages="com.jetbrains.IntelliJ-IDEA-Ultimate com.visualstudio.code com.valvesoftware.Steam com.spotify.Client"
+flatpak_packages="com.jetbrains.IntelliJ-IDEA-Ultimate com.visualstudio.code com.valvesoftware.Steam com.spotify.Client org.telegram"
 
 # Install previous list of flatpak packages.
 flatpak install -y ${flatpak_packages}
+
+# Some custom stuff
+sudo apt install radeontop
 
