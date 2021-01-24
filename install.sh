@@ -11,7 +11,10 @@ sudo apt install -y ${packages}
 sudo sed -i '/{ Scroll_Lock }/s/^#*/#/g' /usr/share/X11/xkb/symbols/br
 setxkbmap
 
+# A list of flatpak packages separated by spaces. Use the package ID for installation.
+# You may use 'flatpak search <package-name>' if you'd like to search a package name.
 flatpak_packages="com.jetbrains.IntelliJ-IDEA-Ultimate com.visualstudio.code com.valvesoftware.Steam com.spotify.Client"
 
+# Install previous list of flatpak packages.
 flatpak install -y ${flatpak_packages}
 
