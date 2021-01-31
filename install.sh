@@ -21,3 +21,10 @@ flatpak install -y ${flatpak_packages}
 # Some custom stuff
 sudo apt install radeontop
 
+## Other custom stuff (dev java)
+# SDKMAN
+if [ ! -d "$HOME/.sdkman" ]; then
+    curl -s "https://get.sdkman.io" | bash
+    source "$HOME/.sdkman/bin/sdkman-init.sh"
+fi
+
