@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -ex
+
 # A list of packages separated by a single space
 packages="vim git lm-sensors lshw-gtk jq httpie gnome-tweaks menulibre steam-launcher"
 
