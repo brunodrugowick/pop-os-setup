@@ -23,10 +23,23 @@ flatpak install -y ${flatpak_packages}
 # Some custom stuff
 sudo apt install radeontop
 
-## Other custom stuff (dev java)
+## Other custom stuff (dev)
 # SDKMAN
 if [ ! -d "$HOME/.sdkman" ]; then
     curl -s "https://get.sdkman.io" | bash
     source "$HOME/.sdkman/bin/sdkman-init.sh"
+
+    sdk install java
+fi
+
+#NVM, NPM
+if [ ! -d "$HOME/.nvm" ]; then
+    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash
+    export NVM_DIR="$HOME/.nvm"
+    [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+    [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+    source "$HOME/.bashrc"
+  
+    nvm install node
 fi
 
