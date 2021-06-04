@@ -55,10 +55,7 @@ cp /etc/skel/.bashrc $HOME/.bashrc
 BASHRC=$HOME/.bashrc
 
 if ! grep -q "direnv hook bash" $HOME/.bashrc; then
-    echo "" >> $BASHRC
-    echo "# direnv stuff" >> $BASHRC 
-    echo "eval \"\$(direnv hook bash)\"" >> $BASHRC
-    echo "" >> $BASHRC
+    printf "\n# direnv stuff\neval \"\$(direnv hook bash)\"\n" >> $BASHRC
 fi
 
 source $BASHRC
