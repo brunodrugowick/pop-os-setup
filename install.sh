@@ -59,3 +59,7 @@ if ! grep -q "direnv hook bash" $HOME/.bashrc; then
 fi
 
 source $BASHRC
+
+# Source other scripts
+source ./gnome-settings.sh
+
