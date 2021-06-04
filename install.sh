@@ -2,8 +2,11 @@
 
 set -ex
 
+sudo apt update
+sudo apt upgrade
+
 # A list of packages separated by a single space
-packages="vim git lm-sensors lshw-gtk jq httpie gnome-tweaks menulibre steam-launcher"
+packages="vim git lm-sensors lshw-gtk jq httpie gnome-tweaks menulibre steam-installer tmux golang direnv"
 
 # Install previous list of packages
 sudo apt install -y ${packages}
@@ -43,3 +46,19 @@ if [ ! -d "$HOME/.nvm" ]; then
     nvm install node
 fi
 
+# Copy config files
+cp ./templates/tmux.config $HOME/.tmux.config
+
+# Reset .bashrc
+cp /etc/skel/.bashrc $HOME/.bashrc
+# Append direnv things to ~/.bashrc
+BASHRC=$HOME/.bashrc
+
+if ! grep -q "direnv hook bash" $HOME/.bashrc; then
+    echo "" >> $BASHRC
+    echo "# direnv stuff" >> $BASHRC 
+    echo "eval \"\$(direnv hook bash)\"" >> $BASHRC
+    echo "" >> $BASHRC
+fi
+
+source $BASHRC
