@@ -6,7 +6,7 @@ sudo apt update
 sudo apt upgrade
 
 # A list of packages separated by a single space
-packages="vim git lm-sensors lshw-gtk jq httpie gnome-tweaks menulibre steam-installer tmux golang direnv"
+packages="vim git lm-sensors lshw-gtk jq httpie gnome-tweaks menulibre steam-installer tmux golang direnv discord"
 
 # Install previous list of packages
 sudo apt install -y ${packages}
