@@ -12,7 +12,10 @@ sudo tar -C /usr/local -xzf go${VERSION}.linux-amd64.tar.gz
 # Append Golang things to ~/.bashrc
 BASHRC=$HOME/.bashrc
 
+mkdir -p ~/go
+
 if ! grep -q "/usr/local/go/bin" $HOME/.bashrc; then
-    printf "\n# Golang stuff\nexport PATH=\$PATH:/usr/local/go/bin\n" >> $BASHRC 
+    printf "\n# Golang stuff\nexport PATH=\$PATH:/usr/local/go/bin\n" >> $BASHRC
+    printf "export GOPATH=$HOME/go\n" >> $BASHRC
 fi
 
