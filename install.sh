@@ -2,11 +2,13 @@
 
 set -ex
 
-sudo apt update
-sudo apt upgrade
+BASHRC=$HOME/.bashrc
+
+sudo apt update -y
+sudo apt upgrade -y
 
 # A list of packages separated by a single space
-packages="vim git lm-sensors lshw-gtk jq httpie gnome-tweaks menulibre steam-installer tmux golang direnv discord"
+packages="vim git lm-sensors lshw-gtk jq httpie gnome-tweaks menulibre steam-installer tmux direnv discord"
 
 # Install previous list of packages
 sudo apt install -y ${packages}
@@ -35,6 +37,12 @@ if [ ! -d "$HOME/.sdkman" ]; then
     sdk install java
 fi
 
+# Copy config files
+cp ./templates/tmux.config $HOME/.tmux.config
+
+# Reset .bashrc
+cp /etc/skel/.bashrc $HOME/.bashrc
+
 #NVM, NPM
 if [ ! -d "$HOME/.nvm" ]; then
     curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash
@@ -46,20 +54,14 @@ if [ ! -d "$HOME/.nvm" ]; then
     nvm install node
 fi
 
-# Copy config files
-cp ./templates/tmux.config $HOME/.tmux.config
-
-# Reset .bashrc
-cp /etc/skel/.bashrc $HOME/.bashrc
 # Append direnv things to ~/.bashrc
-BASHRC=$HOME/.bashrc
-
 if ! grep -q "direnv hook bash" $HOME/.bashrc; then
     printf "\n# direnv stuff\neval \"\$(direnv hook bash)\"\n" >> $BASHRC
 fi
 
-source $BASHRC
-
 # Source other scripts
 source ./gnome-settings.sh
+source ./golang.sh
 
+# Source .bashrc at the end
+source $BASHRC
