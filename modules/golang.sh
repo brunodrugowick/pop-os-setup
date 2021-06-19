@@ -1,13 +1,13 @@
 #!/bin/bash
 
-VERSION=1.16.5
+GO_VERSION=1.16.5
 
 set -x
 
-echo "Installing go v${VERSION}"
+echo "Installing go v${GO_VERSION}"
 sudo rm -rf /usr/local/go
-wget https://golang.org/dl/go${VERSION}.linux-amd64.tar.gz
-sudo tar -C /usr/local -xzf go${VERSION}.linux-amd64.tar.gz
+wget --progress=bar:noscroll -N https://golang.org/dl/go${GO_VERSION}.linux-amd64.tar.gz
+sudo tar -C /usr/local -xzf go${GO_VERSION}.linux-amd64.tar.gz
 
 # Append Golang things to ~/.bashrc
 BASHRC=$HOME/.bashrc
