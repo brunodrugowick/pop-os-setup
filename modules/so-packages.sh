@@ -1,7 +1,5 @@
 #!/bin/bash
 
-echo "Installing packages via APT and Flatpak"
-
 sudo apt update -y
 sudo apt upgrade -y
 

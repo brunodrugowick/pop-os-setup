@@ -2,8 +2,6 @@
 
 GO_VERSION=1.16.5
 
-set -x
-
 echo "Installing go v${GO_VERSION}"
 sudo rm -rf /usr/local/go
 wget --progress=bar:noscroll -N https://golang.org/dl/go${GO_VERSION}.linux-amd64.tar.gz

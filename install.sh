@@ -14,3 +14,4 @@ source ./modules/golang.sh
 
 # Source .bashrc at the end
 source $BASHRC
+

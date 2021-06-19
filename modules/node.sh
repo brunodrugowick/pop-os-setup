@@ -1,7 +1,5 @@
 #!/bin/bash
 
-echo "Installing Node via Node Version Manager"
-
 if [ ! -d "$HOME/.nvm" ]; then
     curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash
     export NVM_DIR="$HOME/.nvm"
