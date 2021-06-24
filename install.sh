@@ -11,6 +11,7 @@ source ./modules/java.sh
 source ./modules/node.sh
 source ./modules/gnome-settings.sh
 source ./modules/golang.sh
+source ./modules/bash-functions.sh
 
 # Source .bashrc at the end
 source $BASHRC

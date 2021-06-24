@@ -1,0 +1,21 @@
+
+# github-compare
+gh-compare () {
+    if [ ! -d .git ]; then
+        echo "Not a git repository"
+        return
+    fi;
+
+    CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
+    echo "Current branch is ${CURRENT_BRANCH}" 
+    MAIN_BRANCH=$(git remote show origin | sed -n '/HEAD branch/s/.*: //p')
+    echo "Main branch is ${MAIN_BRANCH}"
+    GIT_URL=$(git config --get remote.origin.url | cut -d "@" -f 2 | cut -d "." -f "1-2" | sed "s/:/\//")
+
+    URL="https://${GIT_URL}/compare/${MAIN_BRANCH}..${CURRENT_BRANCH}"
+    echo "Opening ${URL}"
+
+    firefox https://${GIT_URL}/compare/${MAIN_BRANCH}..${CURRENT_BRANCH}
+}
+export -f gh-compare
+
