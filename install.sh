@@ -1,17 +1,61 @@
 #!/bin/bash
 
-set -ex
-
 BASHRC=$HOME/.bashrc
 
-source ./modules/so-packages.sh
-source ./modules/custom.sh
-source ./modules/config-files.sh
-source ./modules/java.sh
-source ./modules/node.sh
-source ./modules/gnome-settings.sh
-source ./modules/golang.sh
-source ./modules/bash-functions.sh
+if [[ "$#" -eq 0 ]]; then
+	echo -e "\nUse with 'all' to install everything or add one or more of the following parameters:"
+	echo ""
+	echo -e "\tso-packages:\tinstall APT and Flatpak packages"
+	echo -e "\tcustom:\t\tfix bugs and other custom stuff"
+	echo -e "\tconfig-files:\tset configuration files for programs such as tmux and vim"
+	echo -e "\tjava:\t\tinstall Java things"
+	echo -e "\tnode:\t\tinstall Node things"
+	echo -e "\tgnome-settings:\tset Gnome settings that I like"
+	echo -e "\tgolang:\t\tinstall Golang things"
+	echo -e "\tbash-functions:\tinstall custom Bash functions that make my life easieri"
+	echo ""
+
+	exit 1
+fi
+
+set -ex
+
+while [[ "$#" -gt 0 ]]; do
+	case $1 in
+		# TODO better 'all' handling - if used after other params it reinstall some packages
+		all)
+			set -- so-packages custom config-files java node gnome-settings golang bash-functions
+			;;
+		so-packages) 
+			source ./modules/so-packages.sh 
+			;;
+		custom) 
+			source ./modules/custom.sh 
+			;;
+		config-files) 
+			source ./modules/config-files.sh 
+			;;
+		java) 
+			source ./modules/java.sh 
+			;;
+		node) 
+			source ./modules/node.sh 
+			;;
+		gnome-settings) 
+			source ./modules/gnome-settings.sh 
+			;;
+		golang) 
+			source ./modules/golang.sh 
+			;;
+		bash-functions) 
+			source ./modules/bash-functions.sh 
+			;;
+		*) 
+			echo "Unknown parameter: $1. Ignoring and continuing..."
+			;;
+	esac
+	shift
+done
 
 # Source .bashrc at the end
 source $BASHRC

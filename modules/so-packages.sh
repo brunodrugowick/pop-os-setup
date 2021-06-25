@@ -4,7 +4,7 @@ sudo apt update -y
 sudo apt upgrade -y
 
 # A list of packages separated by a single space
-packages="vim git lm-sensors lshw-gtk jq httpie gnome-tweaks menulibre steam-installer tmux direnv discord"
+packages="vim git lm-sensors lshw-gtk jq httpie gnome-tweaks menulibre steam-installer tmux direnv discord virtualbox"
 
 # direnv requires integration with bash
 if ! grep -q "direnv hook bash" $HOME/.bashrc; then
