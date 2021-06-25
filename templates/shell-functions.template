@@ -10,8 +10,13 @@ gh-compare () {
     echo "Current branch is ${CURRENT_BRANCH}" 
     MAIN_BRANCH=$(git remote show origin | sed -n '/HEAD branch/s/.*: //p')
     echo "Main branch is ${MAIN_BRANCH}"
-    GIT_URL=$(git config --get remote.origin.url | cut -d "@" -f 2 | cut -d "." -f "1-2" | sed "s/:/\//")
 
+    if [[ "$CURRENT_BRANCH" == "$MAIN_BRANCH" ]]; then
+	echo "Already in ${MAIN_BRANCH}, go to another branch to compare"
+	return
+    fi;
+
+    GIT_URL=$(git config --local remote.origin.url | cut -d "@" -f 2 | cut -d "." -f "1-2" | sed "s/:/\//")
     URL="https://${GIT_URL}/compare/${MAIN_BRANCH}..${CURRENT_BRANCH}"
     echo "Opening ${URL}"
 
