@@ -20,7 +20,7 @@ gh-compare () {
     URL="https://${GIT_URL}/compare/${MAIN_BRANCH}..${CURRENT_BRANCH}"
     echo "Opening ${URL}"
 
-    firefox https://${GIT_URL}/compare/${MAIN_BRANCH}..${CURRENT_BRANCH}
+    firefox -new-window https://${GIT_URL}/compare/${MAIN_BRANCH}..${CURRENT_BRANCH}
 }
 export -f gh-compare
 
