@@ -1,6 +1,7 @@
 #!/bin/bash
 
 BASHRC=$HOME/.bashrc
+SETUP_HOME=$(pwd)
 
 if [[ "$#" -eq 0 ]]; then
 	echo -e "\nUse with 'all' to install everything or add one or more of the following parameters:"
@@ -12,7 +13,8 @@ if [[ "$#" -eq 0 ]]; then
 	echo -e "\tnode:\t\tinstall Node things"
 	echo -e "\tgnome-settings:\tset Gnome settings that I like"
 	echo -e "\tgolang:\t\tinstall Golang things"
-	echo -e "\tbash-functions:\tinstall custom Bash functions that make my life easieri"
+	echo -e "\tbash-functions:\tinstall custom Bash functions that make my life easier"
+	echo -e "\tepic-store:\tinstall legendary, an alternative launcher for Epic Games"
 	echo ""
 
 	exit 1
@@ -49,6 +51,9 @@ while [[ "$#" -gt 0 ]]; do
 			;;
 		bash-functions) 
 			source ./modules/bash-functions.sh 
+			;;
+		epic-store)
+			source ./modules/epic-store.sh
 			;;
 		*) 
 			echo "Unknown parameter: $1. Ignoring and continuing..."
