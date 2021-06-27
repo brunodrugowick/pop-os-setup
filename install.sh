@@ -26,7 +26,7 @@ while [[ "$#" -gt 0 ]]; do
 	case $1 in
 		# TODO better 'all' handling - if used after other params it reinstall some packages
 		all)
-			set -- so-packages custom config-files java node gnome-settings golang bash-functions
+			set -- so-packages custom config-files java node gnome-settings golang bash-functions epic-store
 			;;
 		so-packages) 
 			source ./modules/so-packages.sh 
