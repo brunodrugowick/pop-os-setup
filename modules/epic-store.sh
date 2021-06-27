@@ -10,5 +10,6 @@ echo "" >> /home/drugo/.config/legendary/config.ini
 
 # restore original directory
 cd $SETUP_HOME
-cat ./templates/epic-store-bash-function.template >> $BASHRC
+# TODO this function is not ready, actually... also, I have to centralize adding things to $BASHRC 
+#cat ./templates/epic-store-bash-function.template >> $BASHRC
 

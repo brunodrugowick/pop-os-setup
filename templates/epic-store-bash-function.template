@@ -1,7 +1,7 @@
 
 #get Epic game name (can be an UUID) to use with Legendary (alternative Epic Games store)
 get-epic-game-name () {
-        APP_NAME=$(legendary list-installed | grep $1 | awk -F'App name: ' '{print $2}' | awk -F' ' '{print $1}')
+        APP_NAME=$(legendary list-games | grep $1 | awk -F'App name: ' '{print $2}' | awk -F' ' '{print $1}')
         if [[ "$APP_NAME" != "" ]]; then
                echo $APP_NAME
         fi;
