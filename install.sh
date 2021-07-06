@@ -59,7 +59,7 @@ while [[ "$#" -gt 0 ]]; do
 			echo "Unknown parameter: $1. Ignoring and continuing..."
 			;;
 	esac
-	shift
+	shift # on to the next parameter
 done
 
 # Source .bashrc at the end
