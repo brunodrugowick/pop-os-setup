@@ -9,6 +9,6 @@ This is a work in progress, but the script is designed to run multiple times wit
 Looks like now I need a list to keep track of everything I want to do/fix:
 
 - [ ] Add a Changelog
-- [ ] Fix location of Go installation file
+- [X] ~~Fix location of Go installation file~~
 - [ ] Fix/add Epic Games (via Legendary) things (currently it's kind of incomplete)
 
