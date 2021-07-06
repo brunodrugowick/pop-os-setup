@@ -7,7 +7,7 @@ sudo apt upgrade -y
 packages="vim git lm-sensors lshw-gtk jq httpie gnome-tweaks menulibre steam-installer tmux direnv discord virtualbox"
 
 # direnv requires integration with bash
-if ! grep -q "direnv hook bash" $HOME/.bashrc; then
+if ! grep -q "direnv hook bash" $BASHRC; then
     printf "\n# direnv stuff\neval \"\$(direnv hook bash)\"\n" >> $BASHRC
 fi
 

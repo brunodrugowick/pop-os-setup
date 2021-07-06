@@ -12,10 +12,13 @@ sudo tar -C /usr/local -xzf go${GO_VERSION}.linux-amd64.tar.gz
 
 mkdir -p $HOME/go
 
-if ! grep -q "/usr/local/go/bin" $HOME/.bashrc; then
+if ! grep -q "/usr/local/go/bin" $BASHRC; then
     printf "\n# Golang stuff\nexport PATH=\$PATH:/usr/local/go/bin\n" >> $BASHRC
     printf "export GOPATH=$HOME/go\n" >> $BASHRC
 fi
 
 # Remove temp folder
 rm -rf $TEMP_FOLDER
+
+# Go back to setup directory
+cd $SETUP_HOME

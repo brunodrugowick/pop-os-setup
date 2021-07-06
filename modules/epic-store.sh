@@ -10,6 +10,8 @@ echo "" >> /home/drugo/.config/legendary/config.ini
 
 # restore original directory
 cd $SETUP_HOME
-# TODO this function is not ready, actually... also, I have to centralize adding things to $BASHRC 
-#cat ./templates/epic-store-bash-function.template >> $BASHRC
 
+# This is a best effort approach to not duplicate things =/
+if ! grep -q "export -f get-epic-game-name" $BASHRC; then
+    cat ./templates/epic-store-bash-function.sh.template >> $BASHRC
+fi
