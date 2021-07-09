@@ -15,6 +15,7 @@ if [[ "$#" -eq 0 ]]; then
 	echo -e "\tgolang:\t\tinstall Golang things"
 	echo -e "\tbash-functions:\tinstall custom Bash functions that make my life easier"
 	echo -e "\tepic-store:\tinstall legendary, an alternative launcher for Epic Games"
+	echo -e "\tdocker:\t\tinstall docker"
 	echo ""
 
 	exit 1
@@ -54,6 +55,9 @@ while [[ "$#" -gt 0 ]]; do
 			;;
 		epic-store)
 			source ./modules/epic-store.sh
+			;;
+		docker)
+			source ./modules/docker.sh
 			;;
 		*) 
 			echo "Unknown parameter: $1. Ignoring and continuing..."

@@ -1,3 +1,4 @@
 /logs/
 *.tar.gz
+get-docker.sh
 
