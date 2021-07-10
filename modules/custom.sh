@@ -5,3 +5,8 @@
 sudo sed -i '/{ Scroll_Lock }/s/^#*/#/g' /usr/share/X11/xkb/symbols/br
 setxkbmap
 
+# Configure ksnip to start
+AUTOSTART_FOLDER=$HOME/.config/autostart
+mkdir -p $AUTOSTART_FOLDER
+cp $SETUP_HOME/templates/ksnip-autostart.template $AUTOSTART_FOLDER/ksnip.desktop
+
