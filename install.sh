@@ -16,21 +16,26 @@ echo -e "\tbash-functions:\tinstall custom Bash functions that make my life easi
 echo -e "\tepic-store:\tinstall legendary, an alternative launcher for Epic Games"
 echo -e "\tdocker:\t\tinstall docker"
 echo ""
-echo -e "\nThis script can safelly run multiple times, but be aware it will rewrite things like your ~/.bashrc file, for example"
+echo -e "\nThis script can safelly run multiple times, but be aware it will rewrite things like your ~/.bashrc file, for example\n"
 
-set -ex
+read -p "Continue? [yes/No]: " CONTINUE
+if [[ "$CONTINUE" == "yes" ]]; then
+	set -ex
 
-source ./modules/so-packages.sh 
-source ./modules/custom.sh 
-source ./modules/config-files.sh 
-source ./modules/java.sh 
-source ./modules/node.sh 
-source ./modules/gnome-settings.sh 
-source ./modules/golang.sh 
-source ./modules/bash-functions.sh 
-source ./modules/epic-store.sh
-source ./modules/docker.sh
+	source ./modules/so-packages.sh 
+	source ./modules/custom.sh 
+	source ./modules/config-files.sh 
+	source ./modules/java.sh 
+	source ./modules/node.sh 
+	source ./modules/gnome-settings.sh 
+	source ./modules/golang.sh 
+	source ./modules/bash-functions.sh 
+	source ./modules/epic-store.sh
+	source ./modules/docker.sh
 
-# Source .bashrc at the end
-source $BASHRC
+	# Source .bashrc at the end
+	source $BASHRC
+else 
+	echo -e "Aborting execution.\n\nYou may want to take a look at the modules folder and use some of the scripts. You may need to set BASHRC and SETUP_HOME before executing them.\n\nBASHRC=/home/<user>/.bashrc SETUP_HOME=$(pwd) ./modules/so-packages.sh\n"
+fi
 
