@@ -15,3 +15,4 @@ game () {
             legendary launch $APP_NAME
         fi;
 }
+export -f game

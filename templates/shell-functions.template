@@ -24,3 +24,11 @@ gh-compare () {
 }
 export -f gh-compare
 
+# Uses a temp file to copy from tmux buffer to default buffer
+# Thanks to https://github.com/derelbenkoenig/bash-fu/blob/master/bin/tmuxclip
+cliptmux () {
+	TEMP_FILE=$(mktemp)
+	tmux save-buffer $TEMP_FILE && xclip -sel clip <$TEMP_FILE
+}
+export -f cliptmux
+
