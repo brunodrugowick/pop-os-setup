@@ -14,6 +14,7 @@ echo -e "\tgnome-settings:\tset Gnome settings that I like"
 echo -e "\tgolang:\t\tinstall Golang things"
 echo -e "\tbash-functions:\tinstall custom Bash functions that make my life easier"
 echo -e "\tepic-store:\tinstall legendary, an alternative launcher for Epic Games"
+echo -e "\ttmux:\t\tinstall and configures TMUX, TMUX Plugin Manager as well as a few plugins"
 echo -e "\tdocker:\t\tinstall docker"
 echo ""
 echo -e "\nThis script can safelly run multiple times, but be aware it will rewrite things like your ~/.bashrc file, for example\n"
@@ -32,6 +33,7 @@ if [[ "$CONTINUE" == "yes" ]]; then
 	source ./modules/bash-functions.sh 
 	source ./modules/epic-store.sh
 	source ./modules/docker.sh
+	source ./modules/tmux.sh
 
 	# Source .bashrc at the end
 	source $BASHRC
