@@ -21,7 +21,7 @@ echo -e "\nThis script can safelly run multiple times, but be aware it will rewr
 
 read -p "Continue? [yes/No]: " CONTINUE
 if [[ "$CONTINUE" == "yes" ]]; then
-	set -ex
+	set -x
 
 	source ./modules/so-packages.sh 
 	source ./modules/custom.sh 
