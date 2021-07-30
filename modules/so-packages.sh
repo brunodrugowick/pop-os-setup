@@ -16,7 +16,7 @@ sudo apt install -y ${packages}
 
 # A list of flatpak packages separated by spaces. Use the package ID for installation.
 # You may use 'flatpak search <package-name>' if you'd like to search a package name.
-flatpak_packages="com.jetbrains.IntelliJ-IDEA-Ultimate com.jetbrains.GoLand com.visualstudio.code com.spotify.Client org.telegram"
+flatpak_packages="com.jetbrains.IntelliJ-IDEA-Ultimate com.jetbrains.GoLand com.spotify.Client org.telegram"
 
 # Install previous list of flatpak packages.
 flatpak install -y ${flatpak_packages}
