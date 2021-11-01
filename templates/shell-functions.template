@@ -1,4 +1,12 @@
 
+# Re-set PS1 to my liking
+if [ "$color_prompt" = yes ]; then
+    PS1='\[\033[01;34m\]\w\[\033[00m\] $(parse_git_branch) \n >> '
+else
+    PS1='\w $(parse_git_branch) \n >> '
+fi
+unset color_prompt force_color_prompt
+
 # github-compare
 gh-compare () {
     if [ ! -d .git ]; then
