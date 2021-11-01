@@ -1,9 +1,18 @@
 #!/bin/bash
 
+LEGENDARY_HOME=$HOME/Apps/legendary
+
 sudo apt -y install python3 python3-requests python3-setuptools-git
-cd $(mktemp -d)
-git clone https://github.com/derrod/legendary.git
-cd legendary
+mkdir -p $LEGENDARY_HOME
+cd $LEGENDARY_HOME
+git clone https://github.com/derrod/legendary.git .
+if [ $? -eq 0 ] 
+then 
+    echo "Cloned new repo" 
+else 
+    echo "Legendary already installed. Updating..."
+    git pull
+fi
 pip install .
 # It appears that the installation doesn't create the config file, so, creating an empty one.
 echo "" >> /home/drugo/.config/legendary/config.ini
@@ -15,3 +24,4 @@ cd $SETUP_HOME
 if ! grep -q "export -f get-epic-game-name" $BASHRC; then
     cat ./templates/epic-store-bash-function.sh.template >> $BASHRC
 fi
+
