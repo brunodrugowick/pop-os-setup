@@ -1,4 +1,7 @@
 
+parse_git_branch() {
+    git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/(\1)/'
+}
 # Re-set PS1 to my liking
 if [ "$color_prompt" = yes ]; then
     PS1='\[\033[01;34m\]\w\[\033[00m\] $(parse_git_branch) \n >> '
