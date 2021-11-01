@@ -15,8 +15,11 @@ if command -v tmux &> /dev/null && [ -n "$PS1" ] && [[ ! "$TERM" =~ screen ]] &&
 	tmux attach -t default || tmux new -s default
 fi
 "
-# Prints bash_content to BASHRC file
-printf '%s' "$bash_content" >> $BASHRC
+# This is a best effort approach to not duplicate things =/
+if ! grep -q "# TMUX as default terminal" $BASHRC; then
+    # Prints bash_content to BASHRC file
+    printf '%s' "$bash_content" >> $BASHRC
+fi
 
 source ~/.tmux.conf
 tmux source ~/.tmux.conf
