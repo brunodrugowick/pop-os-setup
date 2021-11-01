@@ -32,8 +32,9 @@ if [[ "$CONTINUE" == "yes" ]]; then
 	source ./modules/golang.sh 
 	source ./modules/bash-functions.sh 
 	source ./modules/epic-store.sh
-	source ./modules/docker.sh
 	source ./modules/tmux.sh
+	# TODO Docker installation creates another session or something, need to fix 
+	#source ./modules/docker.sh
 
 	# Source .bashrc at the end
 	source $BASHRC

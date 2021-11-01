@@ -13,4 +13,5 @@ Looks like now I need a list to keep track of everything I want to do/fix:
 - [ ] Fix SDKMAN to DO NOT ASK anything to the user
 - [X] ~~Fix/add Epic Games (via Legendary) things (currently it's kind of incomplete)~~
 - [ ] Move to Makefile to address dependencies better
+- [ ] Review docker install and decide if I should keep
     
