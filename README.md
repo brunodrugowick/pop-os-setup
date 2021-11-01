@@ -10,6 +10,7 @@ Looks like now I need a list to keep track of everything I want to do/fix:
 
 - [ ] Add a Changelog
 - [X] ~~Fix location of Go installation file~~
+- [ ] Fix SDKMAN to DO NOT ASK anything to the user
 - [ ] Fix/add Epic Games (via Legendary) things (currently it's kind of incomplete)
 - [ ] Move to Makefile to address dependencies better
 - [ ] Maybe allowing to run modules separately was not a good idea. After all, this
