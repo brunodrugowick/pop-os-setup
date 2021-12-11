@@ -6,7 +6,7 @@ rm -rf ~/.tmux/plugins/tpm
 git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 
 # Copy config files
-cp $SETUP_HOME/templates/tmux.config $HOME/.tmux.conf
+cp $SETUP_HOME/templates/tmux.config $HOME/.tmux.config
 
 # Start TMUX by default
 bash_content="
