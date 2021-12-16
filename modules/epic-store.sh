@@ -2,7 +2,7 @@
 
 LEGENDARY_HOME=$HOME/Apps/legendary
 
-sudo apt -y install python3 python3-requests python3-setuptools-git
+sudo apt -y install python3 python3-requests python3-setuptools-git python3-pip
 mkdir -p $LEGENDARY_HOME
 cd $LEGENDARY_HOME
 git clone https://github.com/derrod/legendary.git .
