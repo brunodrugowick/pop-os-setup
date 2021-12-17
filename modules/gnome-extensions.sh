@@ -8,3 +8,4 @@ chmod +x gnome-shell-extension-installer
 ./gnome-shell-extension-installer 906  # Sound Input & Output Device Chooser
 ./gnome-shell-extension-installer 779  # Clipboard Indicator
 
+cd -
