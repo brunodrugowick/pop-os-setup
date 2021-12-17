@@ -11,6 +11,7 @@ echo -e "\tconfig-files:\tset configuration files for programs such as tmux and 
 echo -e "\tjava:\t\tinstall Java things"
 echo -e "\tnode:\t\tinstall Node things"
 echo -e "\tgnome-settings:\tset Gnome settings that I like"
+echo -e "\tgnome-extensions:\tinstall my Gnome Extensions"
 echo -e "\tgolang:\t\tinstall Golang things"
 echo -e "\tbash-functions:\tinstall custom Bash functions that make my life easier"
 echo -e "\tepic-store:\tinstall legendary, an alternative launcher for Epic Games"
@@ -29,6 +30,7 @@ if [[ "$CONTINUE" == "yes" ]]; then
 	source ./modules/java.sh 
 	source ./modules/node.sh 
 	source ./modules/gnome-settings.sh 
+	source ./modules/gnome-extensions.sh
 	source ./modules/golang.sh 
 	source ./modules/bash-functions.sh 
 	source ./modules/epic-store.sh
