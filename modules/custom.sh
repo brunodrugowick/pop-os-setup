@@ -10,3 +10,11 @@ AUTOSTART_FOLDER=$HOME/.config/autostart
 mkdir -p $AUTOSTART_FOLDER
 cp $SETUP_HOME/templates/ksnip-autostart.template $AUTOSTART_FOLDER/ksnip.desktop
 
+# Setup xbindkeys shortcut for my mouse (MX Master 3)
+## from https://support.system76.com/articles/custom-mouse-buttons/
+sudo apt install xbindkeys xautomation
+rm $HOME/.xbindkeysrc || true
+cp $SETUP_HOME/templates/xbindkeysrc.template $HOME/.xbindkeysrc
+killall xbindkeys
+xbindkeys
+
