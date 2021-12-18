@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# TODO I'm not being able to use the GNOME_VERSION on the script. Review the script later, maybe fork it
+# TODO I'm not being able to use the GNOME_VERSION (because 40.5) on the script. Review the script later, maybe fork it
 #GNOME_VERSION=$(sudo gnome-shell --version | cut -f3 -d' ' | cut -d'.' -f1)
 
 cd $(mktemp -d)
