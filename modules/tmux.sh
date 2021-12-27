@@ -22,5 +22,5 @@ if ! grep -q "# TMUX as default terminal" $BASHRC; then
 fi
 
 source ~/.tmux.conf
-tmux source ~/.tmux.conf
+tmux source-file ~/.tmux.conf
 
