@@ -1,5 +1,22 @@
 #!/bin/bash
 
+CONFIG=$(cat <<- 'EOF'
+# This variable alone controls whether the script runs or not. 'yes' continues the script, anything else aborts it.
+INSTALL=yes
+# Location of the .bashrc file (this file will be reset and have things added to it)
+BASHRC=$HOME/.bashrc
+# A list of packages to install via apt separated by a single space
+# You may use 'apt-cache search <package-name>' if you wanto to search packages
+SO_PACKAGES="vim git lm-sensors lshw-gtk jq httpie gnome-tweaks menulibre steam-installer tmux direnv discord virtualbox ksnip xclip wine solaar"
+# A list of flatpak packages separated by spaces. Use the package ID for installation.
+# You may use 'flatpak search <package-name>' if you want to search packages.
+FLATPAK_PACKAGES="com.jetbrains.IntelliJ-IDEA-Ultimate com.jetbrains.GoLand com.spotify.Client"
+# Sets where to install legendary (Epic Store alternative for Linux)
+LEGENDARY_HOME=$HOME/Apps/legendary
+
+EOF
+)
+
 KSNIP_AUTOSTART_TEMPLATE=$(cat <<- 'EOF'
 [Desktop Entry]
 Name=Ksnip
@@ -97,7 +114,7 @@ function setup_script () {
     echo "Using config file $POP_SETUP_CONFIG_FILE"
   else
     echo "Creating config file $POP_SETUP_CONFIG_FILE"
-    cp ./templates/pop-os-setup.config "$POP_SETUP_CONFIG_FILE"
+    echo "$CONFIG" > "$POP_SETUP_CONFIG_FILE"
   fi
   . "$POP_SETUP_CONFIG_FILE"
 }
