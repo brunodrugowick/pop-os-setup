@@ -11,6 +11,7 @@ Looks like now I need a list to keep track of everything I want to do/fix:
 - [ ] Add a Changelog
 - [ ] Add config file (ignored by git and its function is to help the script to be totally unassisted)
 - [ ] Set cronjob to update repo and re-run script when new data is available
+- [ ] Add a wine specific section/function
 - [ ] Set `git` properties (name and email) - this might require a set of things to asked and then re-used for other runs
 - [ ] Fix Telegram installation (is asking for the package that I want between 2)
 - [ ] Use a huge script file with functions, maybe it's simpler and easier (?)
