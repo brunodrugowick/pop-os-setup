@@ -7,10 +7,8 @@ INSTALL=yes
 BASHRC=$HOME/.bashrc
 # A list of packages to install via apt separated by a single space
 # You may use 'apt-cache search <package-name>' if you wanto to search packages
-SO_PACKAGES="vim git lm-sensors lshw-gtk jq httpie gnome-tweaks menulibre steam-installer tmux direnv discord virtualbox ksnip xclip wine solaar"
+SO_PACKAGES="vim git lm-sensors lshw-gtk jq httpie gnome-tweaks menulibre steam-installer tmux discord virtualbox ksnip xclip wine solaar"
 # A list of flatpak packages separated by spaces. Use the package ID for installation.
-# You may use 'flatpak search <package-name>' if you want to search packages.
-FLATPAK_PACKAGES="com.jetbrains.IntelliJ-IDEA-Ultimate com.jetbrains.GoLand com.spotify.Client"
 # A list of Gnome Extensions to install
 # 1319 GSConnect
 # 906  Sound Input & Output Device Chooser
@@ -168,16 +166,8 @@ function setup_script () {
 
 # Install basic apt and flatpak packages
 function so_packages () {
-  sudo apt update -y
-  sudo apt upgrade -y
-
-  # direnv requires integration with bash
-  if ! grep -q "direnv hook bash" $BASHRC; then
-      printf "\n# direnv stuff\neval \"\$(direnv hook bash)\"\n" >> $BASHRC
-  fi
-
   sudo apt install -y $SO_PACKAGES
-  flatpak install -y $FLATPAK_PACKAGES
+  sudo apt update -y
 
   # Clean up
   sudo apt autoremove -y
