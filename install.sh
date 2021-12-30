@@ -11,6 +11,12 @@ SO_PACKAGES="vim git lm-sensors lshw-gtk jq httpie gnome-tweaks menulibre steam-
 # A list of flatpak packages separated by spaces. Use the package ID for installation.
 # You may use 'flatpak search <package-name>' if you want to search packages.
 FLATPAK_PACKAGES="com.jetbrains.IntelliJ-IDEA-Ultimate com.jetbrains.GoLand com.spotify.Client"
+# A list of Gnome Extensions to install
+# 1319 GSConnect
+# 906  Sound Input & Output Device Chooser
+# 779  Clipboard Indicator
+# 4105 Notification Banner Position
+GNOME_EXTENSIONS="1319 906 779 4105"
 # Sets where to install legendary (Epic Store alternative for Linux)
 LEGENDARY_HOME=$HOME/Apps/legendary
 # Defines Golang version to be installed
@@ -229,11 +235,7 @@ function gnome_extensions () {
   wget -O $TFILE "https://github.com/brunelli/gnome-shell-extension-installer/raw/master/gnome-shell-extension-installer"
   chmod +x $TFILE
 
-  # 1319 GSConnect
-  # 906  Sound Input & Output Device Chooser
-  # 779  Clipboard Indicator
-  # 4105 Notification Banner Position
-  $TFILE 1319 906 779 4105 --restart-shell
+  $TFILE $GNOME_EXTENSIONS --restart-shell
 }
 
 # Adds useful things to .bashrc. Other functions may add additional specific things.
