@@ -194,6 +194,7 @@ function auto_start_apps () {
   echo "$KSNIP_AUTOSTART_TEMPLATE" > "$KSNIP_AUTOSTART_FILE"
 }
 
+# Configures shortcuts with xbindkeys
 function xbindkeys_shortcuts () {
   # Setup xbindkeys shortcut for my mouse (MX Master 3)
   ## from https://support.system76.com/articles/custom-mouse-buttons/
@@ -205,6 +206,7 @@ function xbindkeys_shortcuts () {
   xbindkeys
 }
 
+# Resets ~/.bashrc file to distro default. This script assumes it's the only thing editing your .bashrc file.
 function reset_bashrc () {
   # Backup current .bashrc file
   cp $BASHRC $BASHRC'.'$(date +'%F_%H%M%S')'.bkp'
@@ -212,10 +214,12 @@ function reset_bashrc () {
   cp /etc/skel/.bashrc $HOME/.bashrc
 }
 
+# Set Gnome settings that I like
 function gnome_settings () {
   gsettings set org.gnome.desktop.peripherals.touchpad natural-scroll true
 }
 
+# Install Gnome extensions that I like
 function gnome_extensions () {
   # TODO I'm not being able to use the GNOME_VERSION (because 40.5) on the script. Review the script later, maybe fork it
   #GNOME_VERSION=$(sudo gnome-shell --version | cut -f3 -d' ' | cut -d'.' -f1)
@@ -232,10 +236,12 @@ function gnome_extensions () {
   $TFILE 1319 906 779 4105 --restart-shell
 }
 
+# Adds useful things to .bashrc. Other functions may add additional specific things.
 function bashrc_content () {
   printf "$BASHRC_CONTENT" >> $BASHRC
 }
 
+# Install Legendary, an alternative to Epic Launcher
 function legendary_epic_store () {
   sudo apt -y install python3 python3-requests python3-setuptools-git python3-pip
   mkdir -p $LEGENDARY_HOME || true
@@ -257,6 +263,7 @@ function legendary_epic_store () {
   fi
 }
 
+# My tmux setup
 function tmux_setup () {
   set -x
   sudo apt -y install tmux git
@@ -276,6 +283,7 @@ function tmux_setup () {
   tmux source ~/.tmux.conf
 }
 
+# Install latest Java via sdkman
 function java_setup () {
   # SDKMAN
   curl -s "https://get.sdkman.io" | bash
@@ -283,6 +291,7 @@ function java_setup () {
   sdk install java
 }
 
+# Install latest Node via nvm
 function node_setup () {
   if [ ! -d "$HOME/.nvm" ]; then
     curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash
@@ -295,6 +304,7 @@ function node_setup () {
   fi
 }
 
+# Install specific Golang version
 function golang_setup () {
   echo "Installing go v${GO_VERSION}"
   sudo rm -rf /usr/local/go
@@ -310,6 +320,7 @@ function golang_setup () {
   fi
 }
 
+# Install and sets up Docker
 function docker_setup () {
   # Install via convenience script
   TDIR=$(mktemp -d)
