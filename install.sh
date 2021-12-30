@@ -147,6 +147,7 @@ EOF
 )
 
 TMUX_BASH_CONTENT=$(cat <<- 'EOF'
+
 # TMUX as default terminal
 if command -v tmux &> /dev/null && [ -n "$PS1" ] && [[ ! "$TERM" =~ screen ]] && [[ ! "$TERM" =~ tmux ]] && [ -z "$TMUX" ]; then
 	tmux attach -t default || tmux new -s default
