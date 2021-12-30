@@ -268,7 +268,6 @@ function legendary_epic_store () {
 
 # My tmux setup
 function tmux_setup () {
-  set -x
   sudo apt -y install tmux git
 
   rm -rf $HOME/.tmux/plugins/tpm
