@@ -13,6 +13,8 @@ SO_PACKAGES="vim git lm-sensors lshw-gtk jq httpie gnome-tweaks menulibre steam-
 FLATPAK_PACKAGES="com.jetbrains.IntelliJ-IDEA-Ultimate com.jetbrains.GoLand com.spotify.Client"
 # Sets where to install legendary (Epic Store alternative for Linux)
 LEGENDARY_HOME=$HOME/Apps/legendary
+# Defines Golang version to be installed
+GO_VERSION=1.16.5
 
 EOF
 )
@@ -108,12 +110,50 @@ export -f game
 EOF
 )
 
+TMUX_CONFIG=$(cat <<- 'EOF'
+# switch panes using Alt-arrow without prefix
+bind -n M-Left select-pane -L
+bind -n M-Right select-pane -R
+bind -n M-Up select-pane -U
+bind -n M-Down select-pane -D
+
+# don't rename windows automatically
+set-option -g allow-rename off
+
+# enable mouse
+set -g mouse on
+
+# List of plugins
+set -g @plugin 'tmux-plugins/tpm'
+set -g @plugin 'tmux-plugins/tmux-sensible'
+set -g @plugin 'tmux-plugins/tmux-resurrect'
+set -g @plugin 'tmux-plugins/tmux-continuum'
+
+# Continuum config
+set -g @continuum-restore 'on'
+set -g @continuum-save-interval '1'
+set -g status-right 'Continuum status: #{continuum_status}'
+
+# Initialize TMUX plugin manager (keep this line at the very bottom of tmux.conf)
+run '~/.tmux/plugins/tpm/tpm'
+
+EOF
+)
+
+TMUX_BASH_CONTENT=$(cat <<- 'EOF'
+# TMUX as default terminal
+if command -v tmux &> /dev/null && [ -n "$PS1" ] && [[ ! "$TERM" =~ screen ]] && [[ ! "$TERM" =~ tmux ]] && [ -z "$TMUX" ]; then
+	tmux attach -t default || tmux new -s default
+fi
+EOF
+)
+
 # Sets up the configuration file for this setup by copying from the template file
 function setup_script () {
   if test -f "$POP_SETUP_CONFIG_FILE"; then
     echo "Using config file $POP_SETUP_CONFIG_FILE"
   else
-    echo "Creating config file $POP_SETUP_CONFIG_FILE"
+    echo "Creating new config file $POP_SETUP_CONFIG_FILE"
     echo "$CONFIG" > "$POP_SETUP_CONFIG_FILE"
   fi
   . "$POP_SETUP_CONFIG_FILE"
@@ -217,6 +257,73 @@ function legendary_epic_store () {
   fi
 }
 
+function tmux_setup () {
+  set -x
+  sudo apt -y install tmux git
+
+  rm -rf $HOME/.tmux/plugins/tpm
+  git clone https://github.com/tmux-plugins/tpm $HOME/.tmux/plugins/tpm
+
+  # Create config files
+  printf "$TMUX_CONFIG" >> $HOME/.tmux.conf
+
+  # This is a best effort approach to not duplicate things =/
+  if ! grep -q "# TMUX as default terminal" $BASHRC; then
+      # Prints bash_content to BASHRC file
+      printf '%s' "$TMUX_BASH_CONTENT" >> $BASHRC
+  fi
+
+  tmux source ~/.tmux.conf
+}
+
+function java_setup () {
+  # SDKMAN
+  curl -s "https://get.sdkman.io" | bash
+  source "$HOME/.sdkman/bin/sdkman-init.sh"
+  sdk install java
+}
+
+function node_setup () {
+  if [ ! -d "$HOME/.nvm" ]; then
+    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash
+    export NVM_DIR="$HOME/.nvm"
+    [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+    [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+    source "$HOME/.bashrc"
+
+    nvm install node
+  fi
+}
+
+function golang_setup () {
+  echo "Installing go v${GO_VERSION}"
+  sudo rm -rf /usr/local/go
+  wget --progress=bar:noscroll -N https://golang.org/dl/go${GO_VERSION}.linux-amd64.tar.gz
+  # 'tar -C <DIR>' changes to DIR before (since -C is order sensitive) the other operations
+  sudo tar -C /usr/local -xzf go${GO_VERSION}.linux-amd64.tar.gz
+
+  mkdir -p $HOME/go
+
+  if ! grep -q "/usr/local/go/bin" $BASHRC; then
+      printf "\n# Golang stuff\nexport PATH=\$PATH:/usr/local/go/bin\n" >> $BASHRC
+      printf "export GOPATH=$HOME/go\n" >> $BASHRC
+  fi
+}
+
+function docker_setup () {
+  # Install via convenience script
+  TDIR=$(mktemp -d)
+  TFILE=$TDIR/get-docker.sh
+  curl -fsSL https://get.docker.com -o $TFILE
+  chmod +x $TFILE
+  sudo $TFILE
+
+  # Allowing $USER to run docker
+  sudo groupadd docker
+  sudo usermod -aG docker $USER
+  newgrp docker
+}
+
 # The script itself should go from here to the end of the file, let's keep it short and neat.
 POP_SETUP_CONFIG_FILE=$HOME/.pop-os-setup.config
 if [ $# -gt 0 ]; then
@@ -239,12 +346,12 @@ if [[ "$INSTALL" == "yes" ]]; then
   gnome_extensions
 
   legendary_epic_store
-  source ./modules/tmux.sh
+  tmux_setup
 
-  source ./modules/java.sh
-  source ./modules/node.sh
-  source ./modules/golang.sh
-  source ./modules/docker.sh
+  java_setup
+  node_setup
+  golang_setup
+  docker_setup
 
 	source $BASHRC
 else
