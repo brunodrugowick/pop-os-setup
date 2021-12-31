@@ -1,8 +1,5 @@
 #!/bin/bash
 
-CONFIG=$(cat <<- 'EOF'
-# This variable alone controls whether the script runs or not. 'yes' continues the script, anything else aborts it.
-INSTALL=yes
 # Location of the .bashrc file (this file will be reset and have things added to it)
 BASHRC=$HOME/.bashrc
 # A list of packages to install via apt separated by a single space
@@ -15,14 +12,45 @@ SO_PACKAGES="vim git lm-sensors lshw-gtk jq httpie gnome-tweaks menulibre steam-
 # 779  Clipboard Indicator
 # 4105 Notification Banner Position
 GNOME_EXTENSIONS="1319 906 779 4105"
+# General location of Apps
+APPS_PATH=$HOME/Apps
 # Sets where to install legendary (Epic Store alternative for Linux)
-LEGENDARY_HOME=$HOME/Apps/legendary
+LEGENDARY_HOME=$APPS_PATH/legendary
 # Defines Golang version to be installed
 GO_VERSION=1.16.5
+# IDEA Toolbox version to download
+IDEA_TOOLBOX_VERSION=1.22.10970 
 
-EOF
-)
+# Resets ~/.bashrc file to distro default. This script assumes it's the only thing editing your .bashrc file.
+function reset_bashrc () {
+  # Backup current .bashrc file
+  cp $BASHRC $BASHRC'.'$(date +'%F_%H%M%S')'.bkp'
+  # Reset .bashrc
+  cp /etc/skel/.bashrc $HOME/.bashrc
+}
+reset_bashrc
 
+# Install basic apt and flatpak packages
+function so_packages () {
+  sudo apt install -y $SO_PACKAGES
+  sudo apt update -y
+
+  # Clean up
+  sudo apt autoremove -y
+}
+so_packages
+
+function ides_setup () {
+  TFILE=jetbrains-toolbox-${IDEA_TOOLBOX_VERSION}.tar.gz
+  wget --progress=bar:noscroll -N https://download.jetbrains.com/toolbox/${TFILE}
+  # 'tar -C <DIR>' changes to DIR before (since -C is order sensitive) the other operations
+  tar -C $APPS_PATH -xzf $TFILE
+  # Starting Toolbox sets it up to autostart
+  $APPS_PATH/jetbrains-toolbox*/jetbrains-toolbox
+}
+ides_setup
+
+# Configures autostart things
 KSNIP_AUTOSTART_TEMPLATE=$(cat <<- 'EOF'
 [Desktop Entry]
 Name=Ksnip
@@ -30,7 +58,26 @@ Exec=ksnip
 Type=Application
 EOF
 )
+function auto_start_apps () {
+  AUTOSTART_FOLDER=$HOME/.config/autostart
+  # Configure KSNIP to autostart
+  KSNIP_AUTOSTART_FILE=$AUTOSTART_FOLDER/ksnip.desktop
+  mkdir -p $AUTOSTART_FOLDER
+  touch $KSNIP_AUTOSTART_FILE
+  echo "$KSNIP_AUTOSTART_TEMPLATE" > "$KSNIP_AUTOSTART_FILE"
+}
+auto_start_apps
 
+# There's a bug with media keys. This works around it.
+# Based on: https://askubuntu.com/questions/906723/fn-media-keys-slow-delayed-on-ubuntu-gnome-17-04/1072160#1072160
+function media_keys_fix () {
+  # Comments line with '{ Scroll_Lock }'
+  sudo sed -i '/{ Scroll_Lock }/s/^#*/#/g' /usr/share/X11/xkb/symbols/br
+  setxkbmap
+}
+media_keys_fix
+
+# Configures shortcuts with xbindkeys
 XBINDKEYS_TEMPLATE=$(cat <<- 'EOF'
 # Workspace Up
 "xte 'keydown Control_L' 'keydown Super_L' 'key Up' 'keyup Super_L' 'keyup Control_L'"
@@ -42,7 +89,19 @@ XBINDKEYS_TEMPLATE=$(cat <<- 'EOF'
 
 EOF
 )
+function xbindkeys_shortcuts () {
+  # Setup xbindkeys shortcut for my mouse (MX Master 3)
+  ## from https://support.system76.com/articles/custom-mouse-buttons/
+  XBINDKEYS_RC_FILE=$HOME/.xbindkeysrc
+  sudo apt install -y xbindkeys xautomation
+  rm $XBINDKEYS_RC_FILE || true
+  echo "$XBINDKEYS_TEMPLATE" > "$XBINDKEYS_RC_FILE"
+  killall xbindkeys || true
+  xbindkeys
+}
+xbindkeys_shortcuts
 
+# Adds useful general things to .bashrc. Other functions may add additional specific things.
 BASHRC_CONTENT=$(cat <<- 'EOF'
 
 # Re-set PS1 to my liking
@@ -91,7 +150,32 @@ export -f cliptmux
 
 EOF
 )
+function bashrc_content () {
+  printf "$BASHRC_CONTENT" >> $BASHRC
+}
+bashrc_content
 
+# Set Gnome settings that I like
+function gnome_settings () {
+  gsettings set org.gnome.desktop.peripherals.touchpad natural-scroll true
+}
+gnome_settings
+
+# Install Gnome extensions that I like
+function gnome_extensions () {
+  # TODO I'm not being able to use the GNOME_VERSION (because 40.5) on the script. Review the script later, maybe fork it
+  #GNOME_VERSION=$(sudo gnome-shell --version | cut -f3 -d' ' | cut -d'.' -f1)
+
+  TDIR=$(mktemp -d)
+  TFILE=$TDIR/gnome-shell-extension-installer
+  wget -O $TFILE "https://github.com/brunelli/gnome-shell-extension-installer/raw/master/gnome-shell-extension-installer"
+  chmod +x $TFILE
+
+  $TFILE $GNOME_EXTENSIONS --restart-shell
+}
+gnome_extensions
+
+# Install Legendary, an alternative to Epic Launcher
 LEGENDARY_HELPER_FUNCTION=$(cat <<- 'EOF'
 
 # get Epic game name (can be an UUID) to use with Legendary (alternative Epic Games store)
@@ -113,7 +197,29 @@ game () {
 export -f game
 EOF
 )
+function legendary_epic_store () {
+  sudo apt -y install python3 python3-requests python3-setuptools-git python3-pip
+  mkdir -p $LEGENDARY_HOME || true
+  git clone https://github.com/derrod/legendary.git $LEGENDARY_HOME
+  if [ $? -eq 0 ]
+  then
+      echo "Cloned new repo"
+  else
+      echo "Legendary already installed. Updating..."
+      ( cd $LEGENDARY_HOME && git pull )
+  fi
+  pip install $LEGENDARY_HOME
+  # It appears that the installation doesn't create the config file, so, creating an empty one.
+  echo "" >> $HOME/.config/legendary/config.ini
 
+  # This is a best effort approach to not duplicate things =/
+  if ! grep -q "export -f get-epic-game-name" $BASHRC; then
+      printf "$LEGENDARY_HELPER_FUNCTION" >> $BASHRC
+  fi
+}
+legendary_epic_store
+
+# My tmux setup
 TMUX_CONFIG=$(cat <<- 'EOF'
 # switch panes using Alt-arrow without prefix
 bind -n M-Left select-pane -L
@@ -143,7 +249,6 @@ run '~/.tmux/plugins/tpm/tpm'
 
 EOF
 )
-
 TMUX_BASH_CONTENT=$(cat <<- 'EOF'
 
 # TMUX as default terminal
@@ -152,111 +257,6 @@ if command -v tmux &> /dev/null && [ -n "$PS1" ] && [[ ! "$TERM" =~ screen ]] &&
 fi
 EOF
 )
-
-# Sets up the configuration file for this setup by copying from the template file
-function setup_script () {
-  if test -f "$POP_SETUP_CONFIG_FILE"; then
-    echo "Using config file $POP_SETUP_CONFIG_FILE"
-  else
-    echo "Creating new config file $POP_SETUP_CONFIG_FILE"
-    echo "$CONFIG" > "$POP_SETUP_CONFIG_FILE"
-  fi
-  . "$POP_SETUP_CONFIG_FILE"
-}
-
-# Install basic apt and flatpak packages
-function so_packages () {
-  sudo apt install -y $SO_PACKAGES
-  sudo apt update -y
-
-  # Clean up
-  sudo apt autoremove -y
-}
-
-# There's a bug with media keys. This works around it.
-# Based on: https://askubuntu.com/questions/906723/fn-media-keys-slow-delayed-on-ubuntu-gnome-17-04/1072160#1072160
-function media_keys_fix () {
-  # Comments line with '{ Scroll_Lock }'
-  sudo sed -i '/{ Scroll_Lock }/s/^#*/#/g' /usr/share/X11/xkb/symbols/br
-  setxkbmap
-}
-
-# Configures autostart things
-function auto_start_apps () {
-  AUTOSTART_FOLDER=$HOME/.config/autostart
-  # Configure ksnip to autostart
-  KSNIP_AUTOSTART_FILE=$AUTOSTART_FOLDER/ksnip.desktop
-  mkdir -p $AUTOSTART_FOLDER
-  touch $KSNIP_AUTOSTART_FILE
-  echo "$KSNIP_AUTOSTART_TEMPLATE" > "$KSNIP_AUTOSTART_FILE"
-}
-
-# Configures shortcuts with xbindkeys
-function xbindkeys_shortcuts () {
-  # Setup xbindkeys shortcut for my mouse (MX Master 3)
-  ## from https://support.system76.com/articles/custom-mouse-buttons/
-  XBINDKEYS_RC_FILE=$HOME/.xbindkeysrc
-  sudo apt install -y xbindkeys xautomation
-  rm $XBINDKEYS_RC_FILE || true
-  echo "$XBINDKEYS_TEMPLATE" > "$XBINDKEYS_RC_FILE"
-  killall xbindkeys || true
-  xbindkeys
-}
-
-# Resets ~/.bashrc file to distro default. This script assumes it's the only thing editing your .bashrc file.
-function reset_bashrc () {
-  # Backup current .bashrc file
-  cp $BASHRC $BASHRC'.'$(date +'%F_%H%M%S')'.bkp'
-  # Reset .bashrc
-  cp /etc/skel/.bashrc $HOME/.bashrc
-}
-
-# Set Gnome settings that I like
-function gnome_settings () {
-  gsettings set org.gnome.desktop.peripherals.touchpad natural-scroll true
-}
-
-# Install Gnome extensions that I like
-function gnome_extensions () {
-  # TODO I'm not being able to use the GNOME_VERSION (because 40.5) on the script. Review the script later, maybe fork it
-  #GNOME_VERSION=$(sudo gnome-shell --version | cut -f3 -d' ' | cut -d'.' -f1)
-
-  TDIR=$(mktemp -d)
-  TFILE=$TDIR/gnome-shell-extension-installer
-  wget -O $TFILE "https://github.com/brunelli/gnome-shell-extension-installer/raw/master/gnome-shell-extension-installer"
-  chmod +x $TFILE
-
-  $TFILE $GNOME_EXTENSIONS --restart-shell
-}
-
-# Adds useful things to .bashrc. Other functions may add additional specific things.
-function bashrc_content () {
-  printf "$BASHRC_CONTENT" >> $BASHRC
-}
-
-# Install Legendary, an alternative to Epic Launcher
-function legendary_epic_store () {
-  sudo apt -y install python3 python3-requests python3-setuptools-git python3-pip
-  mkdir -p $LEGENDARY_HOME || true
-  git clone https://github.com/derrod/legendary.git $LEGENDARY_HOME
-  if [ $? -eq 0 ]
-  then
-      echo "Cloned new repo"
-  else
-      echo "Legendary already installed. Updating..."
-      ( cd $LEGENDARY_HOME && git pull )
-  fi
-  pip install $LEGENDARY_HOME
-  # It appears that the installation doesn't create the config file, so, creating an empty one.
-  echo "" >> $HOME/.config/legendary/config.ini
-
-  # This is a best effort approach to not duplicate things =/
-  if ! grep -q "export -f get-epic-game-name" $BASHRC; then
-      printf "$LEGENDARY_HELPER_FUNCTION" >> $BASHRC
-  fi
-}
-
-# My tmux setup
 function tmux_setup () {
   sudo apt -y install tmux git
 
@@ -274,6 +274,7 @@ function tmux_setup () {
 
   tmux source ~/.tmux.conf
 }
+tmux_setup
 
 # Install latest Java via sdkman
 function java_setup () {
@@ -282,6 +283,7 @@ function java_setup () {
   source "$HOME/.sdkman/bin/sdkman-init.sh"
   sdk install java
 }
+java_setup
 
 # Install latest Node via nvm
 function node_setup () {
@@ -295,6 +297,7 @@ function node_setup () {
     nvm install node
   fi
 }
+node_setup
 
 # Install specific Golang version
 function golang_setup () {
@@ -311,6 +314,7 @@ function golang_setup () {
       printf "export GOPATH=$HOME/go\n" >> $BASHRC
   fi
 }
+golang_setup
 
 # Install and sets up Docker
 function docker_setup () {
@@ -326,37 +330,7 @@ function docker_setup () {
   sudo usermod -aG docker $USER
   newgrp docker
 }
+docker_setup
 
-# The script itself should go from here to the end of the file, let's keep it short and neat.
-POP_SETUP_CONFIG_FILE=$HOME/.pop-os-setup.config
-if [ $# -gt 0 ]; then
-  POP_SETUP_CONFIG_FILE=$1
-fi
+source $BASHRC
 
-setup_script
-
-if [[ "$INSTALL" == "yes" ]]; then
-  reset_bashrc
-
-  so_packages
-  media_keys_fix
-  auto_start_apps
-  xbindkeys_shortcuts
-
-  bashrc_content
-
-  gnome_settings
-  gnome_extensions
-
-  legendary_epic_store
-  tmux_setup
-
-  java_setup
-  node_setup
-  golang_setup
-  docker_setup
-
-	source $BASHRC
-else
-	echo -e "Aborting execution."
-fi

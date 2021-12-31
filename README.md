@@ -16,6 +16,7 @@ This is a work in progress (and will always be), but the script is designed to r
 Looks like now I need a list to keep track of everything I want to do/fix:
 
 - [ ] Add a Changelog
+- [ ] Add some software: bitwarden, bottles ...
 - [X] ~~Add config file (ignored by git and its function is to help the script to be totally unassisted)~~ Config file is created in the user home
 - [ ] Set cronjob to update repo and re-run script when new data is available
 - [ ] Add a wine specific section/function
