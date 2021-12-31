@@ -43,10 +43,11 @@ so_packages
 function ides_setup () {
   TFILE=jetbrains-toolbox-${IDEA_TOOLBOX_VERSION}.tar.gz
   wget --progress=bar:noscroll -N https://download.jetbrains.com/toolbox/${TFILE}
+  mkdir -p $APPS_PATH || true
   # 'tar -C <DIR>' changes to DIR before (since -C is order sensitive) the other operations
   tar -C $APPS_PATH -xzf $TFILE
   # Starting Toolbox sets it up to autostart
-  $APPS_PATH/jetbrains-toolbox*/jetbrains-toolbox
+  $APPS_PATH/jetbrains-toolbox*/jetbrains-toolbox &
 }
 ides_setup
 
@@ -106,37 +107,41 @@ BASHRC_CONTENT=$(cat <<- 'EOF'
 
 # Re-set PS1 to my liking
 function parse_git_branch () {
-    git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/(\1)/'
+  git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/(\1)/'
 }
 if [ "$color_prompt" = yes ]; then
-    PS1='\[\033[01;34m\]\w\[\033[00m\] $(parse_git_branch) \n >> '
+  PS1='\[\033[01;34m\]\w\[\033[00m\] $(parse_git_branch) \n >> '
 else
-    PS1='\w $(parse_git_branch) \n >> '
+  PS1='\w $(parse_git_branch) \n >> '
 fi
 unset color_prompt force_color_prompt
 
 # github-compare
 function gh-compare () {
-    if [ ! -d .git ]; then
-        echo "Not a git repository"
-        return
-    fi;
+  if [ ! -d .git ]; then
+    echo "Not a git repository"
+    return
+  fi;
 
-    CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
-    echo "Current branch is ${CURRENT_BRANCH}"
-    MAIN_BRANCH=$(git remote show origin | sed -n '/HEAD branch/s/.*: //p')
-    echo "Main branch is ${MAIN_BRANCH}"
+  CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
+  echo "Current branch is ${CURRENT_BRANCH}"
+  MAIN_BRANCH=$(git remote show origin | sed -n '/HEAD branch/s/.*: //p')
+  echo "Main branch is ${MAIN_BRANCH}"
 
-    if [[ "$CURRENT_BRANCH" == "$MAIN_BRANCH" ]]; then
-	echo "Already in ${MAIN_BRANCH}, go to another branch to compare"
-	return
-    fi;
+  if [[ "$CURRENT_BRANCH" == "$MAIN_BRANCH" ]]; then
+  	echo "Already in ${MAIN_BRANCH}, go to another branch to compare"
+	  return
+  fi;
 
-    GIT_URL=$(git config --local remote.origin.url | cut -d "@" -f 2 | cut -d "." -f "1-2" | sed "s/:/\//")
-    URL="https://${GIT_URL}/compare/${MAIN_BRANCH}...${CURRENT_BRANCH}"
+  GIT_URL=$(git config --local remote.origin.url | cut -d "@" -f 2 | cut -d "." -f "1-2" | sed "s/:/\//")
+  URL="https://${GIT_URL}/compare/${MAIN_BRANCH}...${CURRENT_BRANCH}"
+  if [[ "$1" != "" ]]; then
     echo "Opening ${URL}"
-
     firefox -new-window ${URL}
+  else
+    echo "URL copied to clipboard"
+    echo $URL | xclip -sel clip
+  fi;
 }
 export -f gh-compare
 
@@ -316,21 +321,59 @@ function golang_setup () {
 }
 golang_setup
 
+# Set global git user.name and user.email if not set already
+function git_setup () {
+  GIT_CONFIG=$(git config --list | grep 'user.name\|user.email')
+  if [[ -z "$GIT_CONFIG" ]]; then
+    read -p "Username for git: " GIT_USER
+    read -p "Email for git: " GIT_EMAIL
+    git config --global user.name "$GIT_USER"
+    git config --global user.email "$GIT_EMAIL"
+  fi;
+}
+# TODO Should I start putting interactive things here? Not sure.
+#git_setup
+
+# Bitwarden installation
+function bitwarden_cli_setup () {
+  TDIR=$(mktemp -d)
+  TZIPFILE=$TDIR/bitwarden.zip
+  DESTDIR=$HOME/.local/bin
+  DESTFILE=$DESTDIR/bw
+  curl -fsSL "https://vault.bitwarden.com/download/?app=cli&platform=linux" -o $TZIPFILE
+  rm $DESTFILE || true
+  unzip $TZIPFILE -d $DESTDIR
+  chmod +x $DESTFILE
+  # TODO Should I start putting interactive things here? Not sure.
+  #bw login
+}
+bitwarden_cli_setup
+
+# Bitwarden app setup
+function bitwarden_setup () {
+  TFILE=$APPS_PATH/Bitwarden.AppImage
+  curl -fsSL "https://vault.bitwarden.com/download/?app=desktop&platform=linux" -o $TFILE
+  chmod +x $TFILE
+  $TFILE &
+}
+bitwarden_setup
+
 # Install and sets up Docker
 function docker_setup () {
   # Install via convenience script
   TDIR=$(mktemp -d)
-  TFILE=$TDIR/get-docker.sh
-  curl -fsSL https://get.docker.com -o $TFILE
-  chmod +x $TFILE
-  sudo $TFILE
+  TZIPFILE=$TDIR/get-docker.sh
+  curl -fsSL https://get.docker.com -o $TZIPFILE
+  chmod +x $TZIPFILE
+  sudo $TZIPFILE
 
   # Allowing $USER to run docker
   sudo groupadd docker
   sudo usermod -aG docker $USER
   newgrp docker
 }
-docker_setup
+# TODO This script creates a nested session
+#docker_setup
 
 source $BASHRC
 
