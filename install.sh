@@ -269,7 +269,7 @@ function tmux_setup () {
   git clone https://github.com/tmux-plugins/tpm $HOME/.tmux/plugins/tpm
 
   # Create config files
-  printf "$TMUX_CONFIG" >> $HOME/.tmux.conf
+  printf "$TMUX_CONFIG" > $HOME/.tmux.conf
 
   # This is a best effort approach to not duplicate things =/
   if ! grep -q "# TMUX as default terminal" $BASHRC; then
