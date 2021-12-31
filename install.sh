@@ -47,7 +47,7 @@ function ides_setup () {
   # 'tar -C <DIR>' changes to DIR before (since -C is order sensitive) the other operations
   tar -C $APPS_PATH -xzf $TFILE
   # Starting Toolbox sets it up to autostart
-  $APPS_PATH/jetbrains-toolbox*/jetbrains-toolbox
+  $APPS_PATH/jetbrains-toolbox*/jetbrains-toolbox &
 }
 ides_setup
 
@@ -351,8 +351,10 @@ bitwarden_cli_setup
 
 # Bitwarden app setup
 function bitwarden_setup () {
-  curl -fsSL "https://vault.bitwarden.com/download/?app=desktop&platform=linux" -o $APPS_PATH
-  $APPS_PATH/Bitwarde*
+  TFILE=$APPS_PATH/Bitwarden.AppImage
+  curl -fsSL "https://vault.bitwarden.com/download/?app=desktop&platform=linux" -o $TFILE
+  chmod +x $TFILE
+  $TFILE &
 }
 bitwarden_setup
 
