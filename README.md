@@ -15,9 +15,10 @@ This is a work in progress (and will always be), but the script is designed to r
 
 Looks like now I need a list to keep track of everything I want to do/fix:
 
-- [ ] Add a Changelog
-- [ ] Add some software: bitwarden, bottles ...
+- [X] ~~Add a Changelog~~
+- [X] ~~Add some software: bitwarden, bottles ...~~ Didn't add Bottles, though.
 - [X] ~~Add config file (ignored by git and its function is to help the script to be totally unassisted)~~ Config file is created in the user home
+- [ ] Automate version release on GitHub based on the Changelog
 - [ ] Set cronjob to update repo and re-run script when new data is available
 - [ ] Add a wine specific section/function
 - [ ] Set `git` properties (name and email) - this might require a set of things to asked and then re-used for other runs
