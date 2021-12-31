@@ -43,6 +43,7 @@ so_packages
 function ides_setup () {
   TFILE=jetbrains-toolbox-${IDEA_TOOLBOX_VERSION}.tar.gz
   wget --progress=bar:noscroll -N https://download.jetbrains.com/toolbox/${TFILE}
+  mkdir -p $APPS_PATH || true
   # 'tar -C <DIR>' changes to DIR before (since -C is order sensitive) the other operations
   tar -C $APPS_PATH -xzf $TFILE
   # Starting Toolbox sets it up to autostart
