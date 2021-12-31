@@ -321,21 +321,57 @@ function golang_setup () {
 }
 golang_setup
 
+# Set global git user.name and user.email if not set already
+function git_setup () {
+  GIT_CONFIG=$(git config --list | grep 'user.name\|user.email')
+  if [[ -z "$GIT_CONFIG" ]]; then
+    read -p "Username for git: " GIT_USER
+    read -p "Email for git: " GIT_EMAIL
+    git config --global user.name "$GIT_USER"
+    git config --global user.email "$GIT_EMAIL"
+  fi;
+}
+# TODO Should I start putting interactive things here? Not sure.
+#git_setup
+
+# Bitwarden installation
+function bitwarden_cli_setup () {
+  TDIR=$(mktemp -d)
+  TZIPFILE=$TDIR/bitwarden.zip
+  DESTDIR=$HOME/.local/bin
+  DESTFILE=$DESTDIR/bw
+  curl -fsSL "https://vault.bitwarden.com/download/?app=cli&platform=linux" -o $TZIPFILE
+  rm $DESTFILE || true
+  unzip $TZIPFILE -d $DESTDIR
+  chmod +x $DESTFILE
+  # TODO Should I start putting interactive things here? Not sure.
+  #bw login
+}
+bitwarden_cli_setup
+
+# Bitwarden app setup
+function bitwarden_setup () {
+  curl -fsSL "https://vault.bitwarden.com/download/?app=desktop&platform=linux" -o $APPS_PATH
+  $APPS_PATH/Bitwarde*
+}
+bitwarden_setup
+
 # Install and sets up Docker
 function docker_setup () {
   # Install via convenience script
   TDIR=$(mktemp -d)
-  TFILE=$TDIR/get-docker.sh
-  curl -fsSL https://get.docker.com -o $TFILE
-  chmod +x $TFILE
-  sudo $TFILE
+  TZIPFILE=$TDIR/get-docker.sh
+  curl -fsSL https://get.docker.com -o $TZIPFILE
+  chmod +x $TZIPFILE
+  sudo $TZIPFILE
 
   # Allowing $USER to run docker
   sudo groupadd docker
   sudo usermod -aG docker $USER
   newgrp docker
 }
-docker_setup
+# TODO This script creates a nested session
+#docker_setup
 
 source $BASHRC
 
