@@ -11,7 +11,8 @@ SO_PACKAGES="vim git lm-sensors lshw-gtk jq httpie gnome-tweaks menulibre steam-
 # 906  Sound Input & Output Device Chooser
 # 779  Clipboard Indicator
 # 4105 Notification Banner Position
-GNOME_EXTENSIONS="1319 906 779 4105"
+# 1262 Bing Wallpaper
+GNOME_EXTENSIONS="1319 906 779 4105 1262"
 # General location of Apps
 APPS_PATH=$HOME/Apps
 # Sets where to install legendary (Epic Store alternative for Linux)
