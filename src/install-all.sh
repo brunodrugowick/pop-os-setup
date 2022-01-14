@@ -1,56 +1,12 @@
 #!/bin/bash
 
-# Location of the .bashrc file (this file will be reset and have things added to it)
-BASHRC=$HOME/.bashrc
-# A list of packages to install via apt separated by a single space
-# You may use 'apt-cache search <package-name>' if you wanto to search packages
-SO_PACKAGES="vim git lm-sensors lshw-gtk jq httpie gnome-tweaks menulibre steam-installer tmux discord virtualbox ksnip xclip wine solaar"
-# A list of flatpak packages separated by spaces. Use the package ID for installation.
-# A list of Gnome Extensions to install
-# 1319 GSConnect
-# 906  Sound Input & Output Device Chooser
-# 779  Clipboard Indicator
-# 4105 Notification Banner Position
-# 1262 Bing Wallpaper
-GNOME_EXTENSIONS="1319 906 779 4105 1262"
-# General location of Apps
-APPS_PATH=$HOME/Apps
-# Sets where to install legendary (Epic Store alternative for Linux)
-LEGENDARY_HOME=$APPS_PATH/legendary
-# Defines Golang version to be installed
-GO_VERSION=1.16.5
-# IDEA Toolbox version to download
-IDEA_TOOLBOX_VERSION=1.22.10970 
+SCRIPT_HOME=$(dirname "$0")
 
-# Resets ~/.bashrc file to distro default. This script assumes it's the only thing editing your .bashrc file.
-function reset_bashrc () {
-  # Backup current .bashrc file
-  cp $BASHRC $BASHRC'.'$(date +'%F_%H%M%S')'.bkp'
-  # Reset .bashrc
-  cp /etc/skel/.bashrc $HOME/.bashrc
-}
-reset_bashrc
+source $SCRIPT_HOME/config.properties
 
-# Install basic apt and flatpak packages
-function so_packages () {
-  sudo apt install -y $SO_PACKAGES
-  sudo apt update -y
-
-  # Clean up
-  sudo apt autoremove -y
-}
-so_packages
-
-function ides_setup () {
-  TFILE=jetbrains-toolbox-${IDEA_TOOLBOX_VERSION}.tar.gz
-  wget --progress=bar:noscroll -N https://download.jetbrains.com/toolbox/${TFILE}
-  mkdir -p $APPS_PATH || true
-  # 'tar -C <DIR>' changes to DIR before (since -C is order sensitive) the other operations
-  tar -C $APPS_PATH -xzf $TFILE
-  # Starting Toolbox sets it up to autostart
-  $APPS_PATH/jetbrains-toolbox*/jetbrains-toolbox &
-}
-ides_setup
+source $SCRIPT_HOME/reset_bashrc.sh
+source $SCRIPT_HOME/so_packages.sh
+source $SCRIPT_HOME/ide.sh
 
 # Configures autostart things
 KSNIP_AUTOSTART_TEMPLATE=$(cat <<- 'EOF'
