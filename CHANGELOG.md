@@ -9,6 +9,7 @@ Types of changes: `Added`, `Changed`, `Deprecated`, `Removed`, `Fixed` and `Secu
 ## [Unreleased]
 ### Fixed
 - Tmux config was being appended on subsequent runs.
+- Separating in several scripts.
 
 ## [1.1.0.BETA]
 ### Added
