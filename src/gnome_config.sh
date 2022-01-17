@@ -22,4 +22,8 @@ TDIR=$(mktemp -d)
 TFILE=$TDIR/gnome-shell-extension-installer
 wget -O "$TFILE" "https://github.com/brunelli/gnome-shell-extension-installer/raw/master/gnome-shell-extension-installer"
 chmod +x "$TFILE"
-$TFILE "$GNOME_EXTENSIONS" --restart-shell
+for EXTENSION in ${GNOME_EXTENSIONS}; do
+  $TFILE "$EXTENSION"
+done
+# Restart Gnome Shell
+killall -3 gnome-shell

@@ -13,6 +13,7 @@ source $SCRIPT_HOME/xbindkeys_shortcuts.sh
 source $SCRIPT_HOME/bashrc_content.sh
 source $SCRIPT_HOME/gnome_config.sh
 source $SCRIPT_HOME/legendary.sh
+SOURCE $SCRIPT_HOME/steam_csgo_fix.sh
 source $SCRIPT_HOME/tmux.sh
 
 # Install latest Java via sdkman
