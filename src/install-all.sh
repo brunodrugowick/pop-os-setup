@@ -13,7 +13,7 @@ source $SCRIPT_HOME/xbindkeys_shortcuts.sh
 source $SCRIPT_HOME/bashrc_content.sh
 source $SCRIPT_HOME/gnome_config.sh
 source $SCRIPT_HOME/legendary.sh
-SOURCE $SCRIPT_HOME/steam_csgo_fix.sh
+source $SCRIPT_HOME/steam_csgo_fix.sh
 source $SCRIPT_HOME/tmux.sh
 source $SCRIPT_HOME/setup_programming.sh
 source $SCRIPT_HOME/bitwarden.sh
