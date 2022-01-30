@@ -15,4 +15,4 @@ jobs:
 
       - name: Run the script
         run: |
-          ./install.sh
+          ./src/install-all.sh
