@@ -5,11 +5,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 Types of changes: `Added`, `Changed`, `Deprecated`, `Removed`, `Fixed` and `Security`.
 
-[//]: # (TODO Automate the release based on the Changelog file.)
-## [Unreleased]
+## [2.0.0]
+### Added
+- Separating in several scripts.
+- Automatic release via CHANGELOG file
 ### Fixed
 - Tmux config was being appended on subsequent runs.
-- Separating in several scripts.
 
 ## [1.1.0.BETA]
 ### Added
