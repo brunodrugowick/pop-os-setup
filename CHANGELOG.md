@@ -5,8 +5,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 Types of changes: `Added`, `Changed`, `Deprecated`, `Removed`, `Fixed` and `Security`.
 
-[//]: # (TODO Automate the release based on the Changelog file.)
-## [Unreleased]
+[//]: # (The latest version must start on line 9. The GitHub Actions of this repo rely on it. You ca use UNRELEASED as the version if you don't want to release.)
+## [2.0.0]
+### Added
+- Separating in several scripts.
+- Automatic release via CHANGELOG file
 ### Fixed
 - Tmux config was being appended on subsequent runs.
 

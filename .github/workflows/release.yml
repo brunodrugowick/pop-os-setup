@@ -1,0 +1,43 @@
+name: "Continuous Integration"
+on:
+  push:
+    branches:
+      - 'main'
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2.4.0
+
+      - name: read version
+        id: read-version
+        run: |
+          echo ::set-output name=version::$(sed '9!d' ./CHANGELOG.md | cut -d'[' -f2 | cut -d']' -f1)
+
+      - name: read changelog entry for version
+        id: changelog-reader
+        uses: mindsers/changelog-reader-action@v2
+        with:
+          version: "${{ steps.read-version.outputs.version }}"
+          path: ./CHANGELOG.md
+
+      - name: check for existing release
+        id: check-release
+        run: |
+          VERSION=$(git ls-remote --tags origin | grep ${{ steps.read-version.outputs.version }} || [[ $? == 1 ]] && echo '')
+          MISSING=$([[ -z "$VERSION" ]] && echo 'true' || echo 'false')
+          echo ::set-output name=missing::$MISSING
+
+      - name: create release
+        if: ${{ steps.check-release.outputs.missing == 'true' }}
+        id: create-release
+        uses: actions/create-release@v1.1.4
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: "${{ steps.read-version.outputs.version }}"
+          release_name: Pop!_OS Setup Script ${{ steps.read-version.outputs.version }}
+          body: ${{ steps.changelog-reader.outputs.changes }}
+          draft: false
+          prerelease: false

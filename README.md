@@ -1,12 +1,13 @@
 # Pop!_OS fresh install
 
-This script just makes it easier to install software after a fresh installation of the OS.
+Collection of scripts to help with a new machine setup or to maintain some things. 
+There's a lot of repetition, but I chose it because this way I can use the scripts separately.
 
 To run:
 
 ```shell
 git clone https://github.com/brunodrugowick/pop-os-setup ~/pop-os-setup
-~/pop-os-setup/install.sh
+~/pop-os-setup/install-all.sh
 ```
 
 This is a work in progress (and will always be), but the script is designed to run multiple times without adverse effects.
