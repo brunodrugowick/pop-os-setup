@@ -30,4 +30,4 @@ jobs:
 
       - name: Run the script
         run: |
-          ./src/install-all.sh
+          set -ex ; ./src/install-all.sh
