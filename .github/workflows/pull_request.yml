@@ -20,7 +20,7 @@ jobs:
       - uses: dangoslen/changelog-enforcer@v3
         with:
           skipLabels: skip-changelog
-          missingUpdateErrorMessage: 'You need to either add changes to CHANGELOG.md or use the ''skip-changelog'' label'
+          missingUpdateErrorMessage: 'You need to either add changes to CHANGELOG.md or use the "skip-changelog" label'
 
   execute:
     # Ubuntu is the closest thing available to Pop!_OS
