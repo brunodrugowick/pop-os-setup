@@ -37,7 +37,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: "${{ steps.read-version.outputs.version }}"
-          release_name: Pop!_OS Setup Script ${{ steps.read-version.outputs.version }}
+          release_name: Pop!_OS Setup Script v${{ steps.read-version.outputs.version }}
           body: ${{ steps.changelog-reader.outputs.changes }}
           draft: false
           prerelease: false
