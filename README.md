@@ -7,7 +7,7 @@ To run:
 
 ```shell
 git clone https://github.com/brunodrugowick/pop-os-setup ~/pop-os-setup
-~/pop-os-setup/install-all.sh
+~/pop-os-setup/src/install-all.sh
 ```
 
 This is a work in progress (and will always be), but the script is designed to run multiple times without adverse effects.
