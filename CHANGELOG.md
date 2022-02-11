@@ -12,6 +12,7 @@ Types of changes: `Added`, `Changed`, `Deprecated`, `Removed`, `Fixed` and `Secu
 - Automatic release via CHANGELOG file
 ### Fixed
 - Tmux config was being appended on subsequent runs.
+- Nothing at all
 
 ## [1.1.0.BETA]
 ### Added
