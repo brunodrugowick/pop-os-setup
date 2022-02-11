@@ -13,9 +13,12 @@ jobs:
       - name: read version
         id: read-version
         run: |
-          echo ::set-output name=version::$(sed '9!d' ./CHANGELOG.md | cut -d'[' -f2 | cut -d']' -f1)
+          CHANGELOG_VERSION=$(sed '9!d' ./CHANGELOG.md | cut -d'[' -f2 | cut -d']' -f1)
+          echo 'Ignoring version case is "Unreleased"'
+          echo ::set-output name=version::$([[ "$CHANGELOG_VERSION" =~ ^(UNRELEASED|unreleased|Unreleased)$ ]] && echo '' || echo $CHANGELOG_VERSION)
 
       - name: read changelog entry for version
+        if: ${{ steps.read-version.outputs.version != '' }}
         id: changelog-reader
         uses: mindsers/changelog-reader-action@v2
         with:
@@ -23,6 +26,7 @@ jobs:
           path: ./CHANGELOG.md
 
       - name: check for existing release
+        if: ${{ steps.read-version.outputs.version != '' }}
         id: check-release
         run: |
           VERSION=$(git ls-remote --tags origin | grep ${{ steps.read-version.outputs.version }} || [[ $? == 1 ]] && echo '')
@@ -30,7 +34,7 @@ jobs:
           echo ::set-output name=missing::$MISSING
 
       - name: create release
-        if: ${{ steps.check-release.outputs.missing == 'true' }}
+        if: ${{ steps.check-release.outputs.missing == 'true' && steps.read-version.outputs.version != '' }}
         id: create-release
         uses: actions/create-release@v1.1.4
         env:
