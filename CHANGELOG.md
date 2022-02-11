@@ -10,6 +10,7 @@ Types of changes: `Added`, `Changed`, `Deprecated`, `Removed`, `Fixed` and `Secu
 ### Fixed
 - Fix README.
 - Add ability to merge to main without releasing.
+- Dummy change to prove dangoslen/changelog@v3 works here...
 
 ## [2.0.0]
 ### Added
