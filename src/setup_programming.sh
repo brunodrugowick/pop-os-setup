@@ -46,3 +46,13 @@ if [[ -z "$GIT_CONFIG" ]]; then
   git config --global user.name "$GIT_USER"
   git config --global user.email "$GIT_EMAIL"
 fi;
+
+# Jekyll (for GitHub Pages, from official docs)
+sudo apt install ruby-full build-essential zlib1g-dev
+echo '' >> ~/.bashrc
+echo '# Install Ruby Gems to ~/gems' >> ~/.bashrc
+echo 'export GEM_HOME="$HOME/gems"' >> ~/.bashrc
+echo 'export PATH="$HOME/gems/bin:$PATH"' >> ~/.bashrc
+source ~/.bashrc
+gem install jekyll bundler
+
