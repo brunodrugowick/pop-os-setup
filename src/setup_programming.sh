@@ -5,7 +5,7 @@ if [ -z "$GO_VERSION" ]; then
   # Make sure to update config.properties if you change this section of the script
 
   BASHRC=$HOME/.bashrc
-  GO_VERSION=1.16.5
+  GO_VERSION=1.18.1
 fi
 
 # SDKMAN (Java)
