@@ -59,6 +59,51 @@ function cliptmux () {
 }
 export -f cliptmux
 
+# Allow me to name Gnome workspaces
+function workspace-names () {
+FILE=~/.workspace-names
+touch $FILE
+
+WORKSPACE=$1
+shift
+NEW_NAME="$@"
+NUM_WORKSPACES=$(wc -l < $FILE)
+
+if [[ $WORKSPACE -gt 0 && $NUM_WORKSPACES -ge $WORKSPACE ]];
+then
+	# Replacing existing workspace name
+	sed -i ''"$WORKSPACE"'s/.*/'"$NEW_NAME"'/' $FILE
+elif [[ $WORKSPACE -gt $NUM_WORKSPACES  ]]; 
+then
+	# 'New' workspace name
+	# Get to that point
+	START_POINT=$(($NUM_WORKSPACES + 1))
+	for i in $(seq $START_POINT $WORKSPACE); do
+		echo "$i" >> $FILE
+	done
+	# Write new name (actually replacing the line number just added)
+	sed -i ''"$WORKSPACE"'s/.*/'"$NEW_NAME"'/' $FILE
+else
+	echo "Give me a workspace number and its name"
+	exit 1
+fi
+
+WORKSPACES=$(cat $FILE)
+N=""
+for line in $WORKSPACES
+do
+	N=$N\'$line\'\,
+done
+# Remove last comma
+GNOME_COMMAND_NAMES=${N%,*}
+
+# Set workspaces names
+gsettings set org.gnome.desktop.wm.preferences workspace-names "[$GNOME_COMMAND_NAMES]"
+
+}
+
+export -f workspace-names
+
 EOF
 )
 
