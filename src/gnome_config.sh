@@ -9,7 +9,8 @@ if [ -z "$GNOME_EXTENSIONS" ]; then
   # 779  Clipboard Indicator
   # 4105 Notification Banner Position
   # 1262 Bing Wallpaper
-  GNOME_EXTENSIONS="1319 906 779 4105 1262"
+  # 3851 Workspaces Bar
+  GNOME_EXTENSIONS="1319 906 779 4105 1262 3851"
 fi
 
 # Set Gnome settings that I like
