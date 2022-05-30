@@ -9,6 +9,7 @@ source $SCRIPT_HOME/so_packages.sh
 source $SCRIPT_HOME/ide.sh
 source $SCRIPT_HOME/auto_start_apps.sh
 source $SCRIPT_HOME/media_keys_fix.sh
+source $SCRIPT_HOME/cedilla_fix.sh
 source $SCRIPT_HOME/xbindkeys_shortcuts.sh
 source $SCRIPT_HOME/bashrc_content.sh
 source $SCRIPT_HOME/gnome_config.sh
