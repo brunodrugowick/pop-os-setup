@@ -14,11 +14,23 @@ set-option -g allow-rename off
 # enable mouse
 set -g mouse on
 
+# Pane name
+set -g pane-border-status top
+set -g pane-border-format " [ ###P #T ] "
+
 # List of plugins
 set -g @plugin 'tmux-plugins/tpm'
 set -g @plugin 'tmux-plugins/tmux-sensible'
 set -g @plugin 'tmux-plugins/tmux-resurrect'
 set -g @plugin 'tmux-plugins/tmux-continuum'
+set -g @plugin 'roosta/tmux-pop'
+
+# Color config
+set -g @plugin 'dracula/tmux'
+# available plugins: battery, cpu-usage, git, gpu-usage, ram-usage, network, network-bandwidth, network-ping, weather, time
+set -g @dracula-plugins "cpu-usage gpu-usage ram-usage git weather time"
+set -g @dracula-show-powerline true
+set -g @dracula-show-flags true
 
 # Continuum config
 set -g @continuum-restore 'on'
