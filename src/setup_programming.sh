@@ -12,6 +12,10 @@ fi
 curl -s "https://get.sdkman.io" | bash
 source "$HOME/.sdkman/bin/sdkman-init.sh"
 sdk install java
+if ! grep -q "# SDKMAN stuff" $BASHRC; then
+    printf "\n# SDKMAN stuff\n" >> $BASHRC
+    printf "source "$HOME/.sdkman/bin/sdkman-init.sh"\n" >> $BASHRC
+fi;
 
 # NVM (Node)
 NVM_VERSION="v0.39.1"
