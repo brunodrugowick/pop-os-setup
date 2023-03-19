@@ -1,13 +1,5 @@
 #!/bin/bash
 
-if [ -z "$GO_VERSION" ]; then
-  echo "Standalone run. Setting up vars"
-  # Make sure to update config.properties if you change this section of the script
-
-  BASHRC=$HOME/.bashrc
-  GO_VERSION=1.16.5
-fi
-
 # Adds useful general things to .bashrc.
 BASHRC_CONTENT=$(cat <<- 'EOF'
 

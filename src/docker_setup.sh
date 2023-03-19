@@ -15,4 +15,4 @@ function docker_setup () {
   newgrp docker
 }
 # TODO This script creates a nested session
-#docker_setup
+docker_setup

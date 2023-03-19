@@ -1,18 +1,5 @@
 #!/bin/bash
 
-if [ -z "$GNOME_EXTENSIONS" ]; then
-  echo "Standalone run. Setting up vars"
-  # Make sure to update config.properties if you change this section of the script
-
-  # 1319 GSConnect
-  # 906  Sound Input & Output Device Chooser
-  # 779  Clipboard Indicator
-  # 4105 Notification Banner Position
-  # 1262 Bing Wallpaper
-  # 3851 Workspaces Bar
-  GNOME_EXTENSIONS="1319 906 779 4105 1262 3851"
-fi
-
 # Set Gnome settings that I like
 gsettings set org.gnome.desktop.peripherals.touchpad natural-scroll true
 
