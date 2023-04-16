@@ -16,6 +16,7 @@ source $SCRIPT_HOME/gnome_config.sh
 # TODO review this for Steam Libraries outside of the $HOME folder
 #source $SCRIPT_HOME/steam_csgo_fix.sh
 source $SCRIPT_HOME/tmux.sh
+source $SCRIPT_HOME/vim.sh
 source $SCRIPT_HOME/setup_programming.sh
 source $SCRIPT_HOME/bitwarden.sh
 #source $SCRIPT_HOME/docker_setup.sh
