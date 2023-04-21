@@ -28,7 +28,7 @@ set -g @plugin 'roosta/tmux-pop'
 # Color config
 set -g @plugin 'dracula/tmux'
 # available plugins: battery, cpu-usage, git, gpu-usage, ram-usage, network, network-bandwidth, network-ping, weather, time
-set -g @dracula-plugins "cpu-usage gpu-usage ram-usage git weather time"
+set -g @dracula-plugins "git"
 set -g @dracula-show-powerline true
 set -g @dracula-show-flags true
 
