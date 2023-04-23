@@ -6,6 +6,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 Types of changes: `Added`, `Changed`, `Deprecated`, `Removed`, `Fixed` and `Security`.
 
 [//]: # (The latest version must start on line 9. The GitHub Actions of this repo rely on it. You ca use UNRELEASED as the version if you don't want to release.)
+## [2.4.0]
+### Added
+- It's been a while... I added a script to control brightness of the screen
+- Probably added a few small fixes recently as well, not sure.
+
 ## [2.3.0]
 ### Added
 - New script to fix cedilla for US keyboards
