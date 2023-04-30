@@ -1,0 +1,42 @@
+#!/bin/bash
+
+MODES_ARRAY=(ondemand powersave performance)
+DESIRED_POWER_MODE="ondemand"
+
+function get_current_power_mode() {
+    echo $(cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor)
+}
+
+function get_available_power_modes_into_global() {
+    # The first parenthesis is to init an array from the output.
+    # The second parenthesis I'm not sure I need.
+    MODES_ARRAY=($(cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_available_governors))
+}
+
+function read_desired_power_mode_into_global() {
+    echo "Which mode you want to set?"
+    # Iterate over the indexes of the modes_array.
+    for i in "${!MODES_ARRAY[@]}"; do
+        echo -e "\t$i) ${MODES_ARRAY[$i]}"
+    done
+    
+    echo -n "Choose an option: "
+    read selected_mode
+    
+    # Making sure it's a number - will make 0 the default.
+    # The two parenthesis are the arithmetic operator, I guess...
+    selected_mode=$(($selected_mode + 0))
+
+    DESIRED_POWER_MODE=${MODES_ARRAY[$selected_mode]}
+}
+
+function set_power_mode() {
+    echo -n "Setting power mode to "
+    echo $1 | sudo tee /sys/devices/system/cpu/cpu*/cpufreq/scaling_governor
+}
+
+echo "Current power mode is:" $(get_current_power_mode)
+get_available_power_modes_into_global
+read_desired_power_mode_into_global
+set_power_mode $DESIRED_POWER_MODE
+

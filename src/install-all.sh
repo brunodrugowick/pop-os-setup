@@ -20,6 +20,7 @@ source $SCRIPT_HOME/vim.sh
 source $SCRIPT_HOME/setup_programming.sh
 source $SCRIPT_HOME/bitwarden.sh
 #source $SCRIPT_HOME/docker_setup.sh
+source $SCRIPT_HOME/scripts.sh
 
 source $BASHRC
 
