@@ -20,8 +20,7 @@ function read_desired_power_mode_into_global() {
         echo -e "\t$i) ${MODES_ARRAY[$i]}"
     done
     
-    echo -n "Choose an option: "
-    read selected_mode
+    read -p "Choose an option: " selected_mode
     
     # Making sure it's a number - will make 0 the default.
     # The two parenthesis are the arithmetic operator, I guess...

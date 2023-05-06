@@ -24,7 +24,12 @@ set -g @plugin 'tmux-plugins/tmux-sensible'
 set -g @plugin 'tmux-plugins/tmux-resurrect'
 set -g @plugin 'tmux-plugins/tmux-continuum'
 set -g @plugin 'roosta/tmux-pop'
+set -g @plugin 'tmux-plugin/tmux-yank'
 
+# Open panes in current directory # https://youtu.be/DzNmUNvnB04?t=773
+bind '"' split-window -v -c "#{pane_current_path}"
+bind % split-window -h -c "#{pane_current_path}"
+  
 # Color config
 set -g @plugin 'dracula/tmux'
 # available plugins: battery, cpu-usage, git, gpu-usage, ram-usage, network, network-bandwidth, network-ping, weather, time
