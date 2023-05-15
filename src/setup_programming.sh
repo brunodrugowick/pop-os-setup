@@ -11,14 +11,10 @@ fi;
 
 # NVM (Node)
 NVM_VERSION="v0.39.1"
-if [ ! -d "$HOME/.nvm" ]; then
-  curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/${NVM_VERSION}/install.sh | bash
-  export NVM_DIR="$HOME/.nvm"
-  [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-  [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-  source "$HOME/.bashrc"
-  nvm install node
-fi;
+export NVM_DIR=$HOME/.nvm
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/${NVM_VERSION}/install.sh | bash
+source "$HOME/.bashrc"
+nvm install node
 
 # Golang
 echo "Installing go v${GO_VERSION}"
