@@ -1,0 +1,36 @@
+#!/bin/bash
+
+FILLER="#"
+COLS=$(tput cols)
+
+DEBUG=0
+function print() {
+    if [ $DEBUG == "1" ]; then
+        echo "$@"
+    fi
+}
+
+function echo_fillers() {
+    size=$1
+    perc=$(echo "scale=3; ($size/$COLS*100) + 0.5" | bc)
+    perc_rounded=$(echo "($perc+0.5)/1" | bc)
+    text_size=$(expr length "$perc_rounded")
+    #echo -n "# ${perc_rounded} "
+    for ((i=0; i<(size - text_size - 3); i++)); do
+        echo -n $FILLER 
+    done
+    #echo
+    echo " ${perc_rounded}% #"
+}
+
+print COLS=$COLS
+
+CPU_MAX_FREQ=$(bc <<< "$(cat /sys/devices/system/cpu/cpu0/cpufreq/cpuinfo_max_freq) / 1000")
+print CPU_MAX_FREQ=$CPU_MAX_FREQ
+
+for freq in $(grep 'MHz' /proc/cpuinfo | awk '{print $4}'); do
+    perc=$(bc -l <<< "scale=3; ($COLS / $CPU_MAX_FREQ) * $freq")
+    echo_fillers $(echo "($perc+0.5)/1" | bc)
+done
+print $FREQS_PERC
+

@@ -1,0 +1,3 @@
+#!/bin/bash
+
+echo -n "CPU: "; sensors | grep 'Tctl' | awk '{print $2}' | tr -d '+\|°'; echo -n "/GPU: "; nvidia-smi | grep '%.*C' | awk '{print $3}'

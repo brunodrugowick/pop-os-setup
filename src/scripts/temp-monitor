@@ -1,0 +1,8 @@
+#!/bin/bash
+
+tmux send-keys "watch -n 1 sensors" C-m
+tmux splitw -h -p 50
+tmux send-keys "watch -n 1 nvidia-smi" C-m
+
+# On exit close opened TMUX tab
+#trap "echo ARROBA" EXIT

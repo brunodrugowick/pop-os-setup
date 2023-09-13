@@ -1,0 +1,3 @@
+#!/bin/bash
+
+echo -n "CPU (AMD offset): "; sensors | grep 'Tctl' | awk '{print $2}' | tr -d '+\|°'; echo -n "CPU (real): "; sensors | grep 'Tccd1' | awk '{print $2}' | tr -d '+\|°'; echo -n "GPU: "; nvidia-smi | grep '%.*C' | awk '{print $3}'
