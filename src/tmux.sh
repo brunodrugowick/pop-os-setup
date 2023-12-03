@@ -30,13 +30,6 @@ set -g @plugin 'tmux-plugin/tmux-yank'
 bind '"' split-window -v -c "#{pane_current_path}"
 bind % split-window -h -c "#{pane_current_path}"
   
-# Color config
-set -g @plugin 'dracula/tmux'
-# available plugins: battery, cpu-usage, git, gpu-usage, ram-usage, network, network-bandwidth, network-ping, weather, time
-set -g @dracula-plugins "git"
-set -g @dracula-show-powerline true
-set -g @dracula-show-flags true
-
 # Continuum config
 set -g @continuum-restore 'on'
 set -g @continuum-save-interval '1'
