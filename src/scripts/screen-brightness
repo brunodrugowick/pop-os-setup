@@ -1,0 +1,68 @@
+#!/usr/bin/python3
+
+# This is from https://gist.github.com/lagerone/1568ea6fbb98fd90a3495f9e51e26c8c
+# with adaptations from myself.
+
+import logging
+import os
+import subprocess
+import sys
+from typing import Literal
+from systemd import journal
+
+logging.basicConfig(level=logging.DEBUG)
+logger = logging.getLogger()
+logger.addHandler(journal.JournalHandler())
+
+FILE_PATH = os.path.join(
+    os.path.dirname(os.path.realpath(__file__)), ".screen-brightness"
+)
+
+
+def read_current_level() -> float:
+    if not os.path.isfile(FILE_PATH):
+        return 1
+    with open(
+            file=FILE_PATH,
+            mode="r",
+            encoding="utf-8",
+    ) as file:
+        current_level = file.readline().strip()
+        return float(current_level)
+
+
+def save_level(level: float) -> None:
+    with open(
+            file=FILE_PATH,
+            mode="w",
+            encoding="utf-8",
+    ) as file:
+        file.write(str(level))
+
+
+def set_level(level: float) -> float:
+    if level > 1.0:
+        level = 1.0
+    if level < 0.0:
+        level = 0.0
+    log_line = f"Setting screen brightness to {level}.\n"
+    logging.info(log_line)
+    subprocess.run(["xrandr", "--output", "eDP-1", "--brightness", str(level)])
+    return level
+
+
+def adjust_level(method: Literal["up", "down"]) -> None:
+    current_level = read_current_level()
+    adjuster = 0.02 if current_level <= 0.2 else 0.05
+    adjusted_level = current_level + adjuster if method == "up" else current_level - adjuster
+    set_level(level=adjusted_level)
+    save_level(level=set_level(level=adjusted_level))
+
+
+if __name__ == "__main__":
+    ARG = sys.argv[1]
+    if ARG == "up" or ARG == "down":
+        adjust_level(method=ARG)
+    else:
+        set_level(level=float(ARG))
+
