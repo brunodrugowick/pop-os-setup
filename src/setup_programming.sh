@@ -36,7 +36,7 @@ if [[ -z "$GIT_CONFIG" ]]; then
 fi;
 
 # Jekyll (for GitHub Pages, from official docs)
-sudo apt install ruby-full build-essential zlib1g-dev
+sudo apt install -y ruby-full build-essential zlib1g-dev
 echo '' >> ~/.bashrc
 echo '# Install Ruby Gems to ~/gems' >> ~/.bashrc
 echo 'export GEM_HOME="$HOME/gems"' >> ~/.bashrc
