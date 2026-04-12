@@ -1,18 +1,19 @@
 #!/bin/bash
 
-# Install and sets up Docker
+# Install a rootless container stack while keeping a Docker-compatible CLI.
 function docker_setup () {
-  # Install via convenience script
-  TDIR=$(mktemp -d)
-  TZIPFILE=$TDIR/get-docker.sh
-  curl -fsSL https://get.docker.com -o $TZIPFILE
-  chmod +x $TZIPFILE
-  sudo $TZIPFILE
+  sudo apt update -y
+  sudo apt install -y podman podman-docker podman-compose uidmap slirp4netns
 
-  # Allowing $USER to run docker
-  sudo groupadd docker
-  sudo usermod -aG docker $USER
-  newgrp docker
+  mkdir -p "$HOME/.config/containers"
+
+  if ! grep -q "# Podman Docker compatibility" "$BASHRC"; then
+    printf "\n# Podman Docker compatibility\n" >> "$BASHRC"
+    printf "export DOCKER_HOST=unix:///run/user/\$(id -u)/podman/podman.sock\n" >> "$BASHRC"
+  fi
+
+  systemctl --user daemon-reload >/dev/null 2>&1 || true
+  systemctl --user enable --now podman.socket >/dev/null 2>&1 || true
 }
-# TODO This script creates a nested session
+
 docker_setup

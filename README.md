@@ -32,4 +32,5 @@ Looks like now I need a list to keep track of everything I want to do/fix:
 - [X] ~~Fix SDKMAN to DO NOT ASK anything to the user~~ It didn't ask last time, IIRC.
 - [X] ~~Fix/add Epic Games (via Legendary) things (currently it's kind of incomplete)~~
 - [X] ~~Review docker install and decide if I should keep~~ Kept for now
+- [X] Replace the old Docker convenience-script install with a rootless Podman setup that keeps `docker` CLI compatibility
     

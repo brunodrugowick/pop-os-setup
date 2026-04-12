@@ -9,13 +9,6 @@ if ! grep -q "# SDKMAN stuff" $BASHRC; then
     printf "source "$HOME/.sdkman/bin/sdkman-init.sh"\n" >> $BASHRC
 fi;
 
-# NVM (Node)
-NVM_VERSION="v0.39.1"
-export NVM_DIR=$HOME/.nvm
-curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/${NVM_VERSION}/install.sh | bash
-source "$HOME/.bashrc"
-nvm install node
-
 # Golang
 echo "Installing go v${GO_VERSION}"
 sudo rm -rf /usr/local/go
@@ -37,6 +30,9 @@ if [[ -z "$GIT_CONFIG" ]]; then
   #read -p "Email for git: " GIT_EMAIL
   git config --global user.name "$GIT_USER"
   git config --global user.email "$GIT_EMAIL"
+  git config --global init.defaultBranch main
+  git config --global pull.rebase false
+  git config --global core.editor "vim"
 fi;
 
 # Jekyll (for GitHub Pages, from official docs)
