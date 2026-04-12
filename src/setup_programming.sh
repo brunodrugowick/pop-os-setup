@@ -1,12 +1,17 @@
 #!/bin/bash
 
 # SDKMAN (Java)
-curl -s "https://get.sdkman.io" | bash
+if [[ ! -s "$HOME/.sdkman/bin/sdkman-init.sh" ]]; then
+    curl -s "https://get.sdkman.io" | bash
+fi
 source "$HOME/.sdkman/bin/sdkman-init.sh"
-sdk install java
+export sdkman_auto_answer=true
+if ! sdk current java >/dev/null 2>&1; then
+    sdk install java
+fi
 if ! grep -q "# SDKMAN stuff" $BASHRC; then
     printf "\n# SDKMAN stuff\n" >> $BASHRC
-    printf "source "$HOME/.sdkman/bin/sdkman-init.sh"\n" >> $BASHRC
+    printf "source %s/.sdkman/bin/sdkman-init.sh\n" "$HOME" >> $BASHRC
 fi;
 
 # Golang
@@ -37,10 +42,12 @@ fi;
 
 # Jekyll (for GitHub Pages, from official docs)
 sudo apt install -y ruby-full build-essential zlib1g-dev
-echo '' >> ~/.bashrc
-echo '# Install Ruby Gems to ~/gems' >> ~/.bashrc
-echo 'export GEM_HOME="$HOME/gems"' >> ~/.bashrc
-echo 'export PATH="$HOME/gems/bin:$PATH"' >> ~/.bashrc
-source ~/.bashrc
-gem install jekyll bundler
-
+if ! grep -q '# Install Ruby Gems to ~/gems' "$BASHRC"; then
+  echo '' >> "$BASHRC"
+  echo '# Install Ruby Gems to ~/gems' >> "$BASHRC"
+  echo 'export GEM_HOME="$HOME/gems"' >> "$BASHRC"
+  echo 'export PATH="$HOME/gems/bin:$PATH"' >> "$BASHRC"
+fi
+export GEM_HOME="$HOME/gems"
+export PATH="$HOME/gems/bin:$PATH"
+gem install --no-document jekyll bundler
